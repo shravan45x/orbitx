@@ -32,6 +32,11 @@ export interface OrderData {
     };
     orderStatus: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
     paymentStatus: 'pending' | 'completed' | 'failed';
+    razorpayPaymentId?: string;
+    razorpayOrderId?: string;
+    razorpaySignature?: string;
+    isTestMode?: boolean;
+    paymentMethod?: string;
     createdAt: any;
     updatedAt: any;
 }

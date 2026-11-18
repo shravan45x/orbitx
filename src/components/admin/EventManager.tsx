@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { collection, query, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../services/firebase/config';
 import { uploadEventImages, deleteAllEventImages } from '../../services/firebase/eventStorage';
@@ -137,6 +138,31 @@ export default function EventManager({ isOpen, onClose, adminOrbitId }: EventMan
     const [isSaving, setIsSaving] = useState(false);
     const [editingEvent, setEditingEvent] = useState<AdminEvent | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Viewport and background scroll locking
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const originalBodyOverflow = document.body.style.overflow;
+        const originalHtmlOverflow = document.documentElement.style.overflow;
+        const originalTouchAction = document.body.style.touchAction;
+
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') handleClose();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.body.style.overflow = originalBodyOverflow;
+            document.documentElement.style.overflow = originalHtmlOverflow;
+            document.body.style.touchAction = originalTouchAction;
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isOpen]);
 
     // Create form state
     const [newEvent, setNewEvent] = useState({
@@ -589,10 +615,18 @@ export default function EventManager({ isOpen, onClose, adminOrbitId }: EventMan
 
     if (!isOpen) return null;
 
-    return (
+    return createPortal(
         <div
             className={`event-manager ${isClosing ? 'event-manager--closing' : ''}`}
             onClick={handleBackdropClick}
+            onWheel={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            onTouchMove={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            role="dialog"
+            aria-modal="true"
         >
             <div className="event-manager__modal">
                 <div className="event-manager__header">
@@ -1035,6 +1069,7 @@ export default function EventManager({ isOpen, onClose, adminOrbitId }: EventMan
                     )}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

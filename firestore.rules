@@ -1,0 +1,158 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isSuperAdmin == true ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isSuperAdmin() {
+      return isAuthenticated() && (
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isSuperAdmin == true
+      );
+    }
+
+    // =========================================================================
+    // Newsletter & Mail Queue
+    // =========================================================================
+
+    // Newsletter Subscribers
+    match /newsletter_subscribers/{subscriberId} {
+      // Anyone can subscribe with a valid email
+      allow create: if request.resource.data.email is string
+                    && request.resource.data.email.size() > 3;
+      // Allow read and management for authenticated users / admins
+      allow read: if isAuthenticated();
+      // Allow reactivation of subscription
+      allow update: if isAuthenticated() || (
+        request.resource.data.email == resource.data.email
+      );
+      allow delete: if isAdmin();
+    }
+
+    // Mail Queue (consumed by Firebase "Trigger Email from Firestore" Extension)
+    match /mail/{mailId} {
+      // Client can enqueue emails (e.g., welcome email, pass receipts)
+      allow create: if request.resource.data.to is list
+                    && request.resource.data.message.subject is string;
+      // Reading/updating/deleting is restricted to backend service account
+      allow read, update, delete: if false;
+    }
+
+    // =========================================================================
+    // Recruitment & Applications
+    // =========================================================================
+
+    // Open Role Listings
+    match /recruitment_roles/{roleId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Recruitment Alerts
+    match /recruitment_alerts/{alertId} {
+      allow create: if request.resource.data.email is string;
+      allow read, write: if isAuthenticated();
+    }
+
+    // Member Applications
+    match /applications/{applicationId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // =========================================================================
+    // Inquiries & Contact Messages
+    // =========================================================================
+    match /contactMessages/{messageId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // =========================================================================
+    // Merchandise & Orders
+    // =========================================================================
+    match /merch/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /merchOrders/{orderId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // =========================================================================
+    // Events & Registrations
+    // =========================================================================
+    match /events/{eventId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /event_reg/{regId} {
+      allow create: if true;
+      allow read: if true;
+      allow update, delete: if isAuthenticated();
+    }
+
+    match /qr_lookup/{signature} {
+      allow read, write: if true;
+    }
+
+    // =========================================================================
+    // Public Members & Promotions
+    // =========================================================================
+    match /public_members/{memberId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /promotions/{promoId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // =========================================================================
+    // User Profiles & Admin Directory
+    // =========================================================================
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == userId
+                    && (!request.resource.data.keys().hasAny(['isAdmin', 'isSuperAdmin'])
+                        || (request.resource.data.get('isAdmin', false) == false && request.resource.data.get('isSuperAdmin', false) == false));
+      allow update: if isAuthenticated() && (
+        isAdmin() ||
+        (request.auth.uid == userId
+         && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'isSuperAdmin'])))
+      );
+      allow delete: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+    }
+
+    match /admins/{adminId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+
+    // System Registries & Counters (OrbitID registry, ProductID registry, etc.)
+    match /system/{documentId} {
+      allow read, write: if true;
+    }
+
+    // Consortium Settings
+    match /settings/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}

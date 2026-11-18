@@ -1,85 +1,217 @@
-import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
+import StaggeredMenu, { type StaggeredMenuItem, type StaggeredMenuSocialItem } from '../menu/StaggeredMenu';
 import './Navbar.css';
-import logo from '../../assets/logo/Logo_without_background.png';
-import { useSnowfall } from '../../contexts/SnowfallContext';
-import { useRecruitment } from '../../contexts/RecruitmentContext';
 
-export default function Navbar() {
-    const { toggleSnow } = useSnowfall();
-    const { isRecruitmentOpen } = useRecruitment();
-    const clickCountRef = useRef(0);
-    const lastClickTimeRef = useRef(0);
-    const [showJoinTooltip, setShowJoinTooltip] = useState(false);
+interface NavbarProps {
+    currentPath?: string;
+    currentSearch?: string;
+}
 
-    // Easter egg: 3 clicks on logo triggers snowfall
-    const handleLogoClick = (e: React.MouseEvent) => {
-        const now = Date.now();
+export default function Navbar({ currentPath: propPath }: NavbarProps) {
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [dropdownActive, setDropdownActive] = useState(false);
 
-        // Reset counter if more than 1.5 seconds since last click
-        if (now - lastClickTimeRef.current > 1500) {
-            clickCountRef.current = 0;
-        }
+    const location = useLocation();
+    const { isAuthenticated } = useAuth();
+    const { theme } = useTheme();
 
-        clickCountRef.current++;
-        lastClickTimeRef.current = now;
+    // Close dropdown when clicking outside of the dropdown container
+    useEffect(() => {
+        const handleOutsideClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (dropdownActive && !target.closest('.navbar-item-with-dropdown')) {
+                setDropdownActive(false);
+            }
+        };
+        document.addEventListener('click', handleOutsideClick);
+        return () => {
+            document.removeEventListener('click', handleOutsideClick);
+        };
+    }, [dropdownActive]);
 
-        if (clickCountRef.current >= 3) {
-            e.preventDefault(); // Don't navigate on the 3rd click
-            toggleSnow();
-            clickCountRef.current = 0; // Reset counter
+    // Close menu when route changes
+    useEffect(() => {
+        setMenuOpen(false);
+        setDropdownActive(false);
+        document.body.style.overflow = '';
+    }, [location.pathname, propPath]);
+
+    const handleMouseEnter = () => {
+        if (window.innerWidth > 1280) {
+            setDropdownActive(true);
         }
     };
 
-    // Handle Join click when recruitment is closed
-    const handleJoinClick = (e: React.MouseEvent) => {
-        if (!isRecruitmentOpen) {
+    const handleMouseLeave = () => {
+        if (window.innerWidth > 1280) {
+            setDropdownActive(false);
+        }
+    };
+
+    const handleDropdownClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setDropdownActive(!dropdownActive);
+    };
+
+    const toggleMenu = () => {
+        setMenuOpen((prev) => {
+            const nextState = !prev;
+            if (nextState) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+                setDropdownActive(false);
+            }
+            return nextState;
+        });
+    };
+
+    const closeMenu = () => {
+        setMenuOpen(false);
+        setDropdownActive(false);
+        document.body.style.overflow = '';
+    };
+
+    const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (location.pathname === '/') {
             e.preventDefault();
-            setShowJoinTooltip(true);
-            // Auto-hide tooltip after 5 seconds
-            setTimeout(() => setShowJoinTooltip(false), 5000);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        closeMenu();
     };
+
+    const mobileMenuItems: StaggeredMenuItem[] = [
+        { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
+        { label: 'About', ariaLabel: 'About OrbitX', link: '/about' },
+        { label: 'Events', ariaLabel: 'OrbitX Events', link: '/events' },
+        { label: 'Members', ariaLabel: 'Our Team', link: '/members' },
+        { label: 'Recruitment', ariaLabel: 'Join OrbitX', link: '/recruitment' },
+        { label: 'Merchandise', ariaLabel: 'OrbitX Merch', link: '/merch' },
+        { label: 'Blog & News', ariaLabel: 'Blog & Dispatches', link: '/blogs' },
+        { label: 'Contact', ariaLabel: 'Contact Us', link: '/contact' },
+        isAuthenticated
+            ? { label: 'Dashboard', ariaLabel: 'User Dashboard', link: '/user-dashboard' }
+            : { label: 'Log In', ariaLabel: 'Log In to OrbitX', link: '/login' },
+    ];
+
+    const mobileSocialItems: StaggeredMenuSocialItem[] = [
+        { label: 'Instagram', link: 'https://www.instagram.com/orbitx_zcoer/' },
+        { label: 'LinkedIn', link: 'https://www.linkedin.com/company/orbitx-zcoer/' },
+    ];
 
     return (
-        <nav className="navbar">
-            <ul className="navbar__links navbar__links--left">
-                <li className="navbar__item">
-                    <Link to="/" className="navbar__link">Home</Link>
-                </li>
-                <li className="navbar__item">
-                    <Link to="/about" className="navbar__link">About</Link>
-                </li>
-                <li className="navbar__item">
-                    <Link to="/events" className="navbar__link">Events</Link>
-                </li>
-            </ul>
-            <Link to="/" className="navbar__logo" onClick={handleLogoClick}>
-                <img src={logo} alt="OrbitX" className="navbar__logo-img" />
-            </Link>
-            <ul className="navbar__links navbar__links--right">
-                <li className="navbar__item">
-                    <Link to="/members" className="navbar__link">Members</Link>
-                </li>
-                <li className="navbar__item navbar__item--join">
-                    <Link
-                        to={isRecruitmentOpen ? "/join" : "#"}
-                        className={`navbar__link ${!isRecruitmentOpen ? 'navbar__link--disabled' : ''}`}
-                        onClick={handleJoinClick}
-                    >
-                        Join
-                    </Link>
-                    {showJoinTooltip && (
-                        <div className="navbar__tooltip">
-                            <span>Recruitment is closed</span>
-                            <span className="navbar__tooltip-sub">Check back later!</span>
+        <nav className="navbar" role="navigation" aria-label="Main Navigation">
+            {/* SpaceX-style dimming backdrop overlay */}
+            <div className={`navbar-backdrop-overlay ${dropdownActive ? 'visible' : ''}`} />
+
+            <div className="navbar-container">
+                {/* Left Side: Logo */}
+                <Link to="/" className="navbar-logo-wrapper" onClick={handleLogoClick} aria-label="OrbitX Home">
+                    <img
+                        src={theme === 'light' ? '/favicon/Logo-Black.png' : '/favicon/Logo-White.png'}
+                        alt="OrbitX"
+                        className="navbar-logo-img"
+                    />
+                </Link>
+
+                {/* Hamburger Toggle Button (Visible below 1280px) */}
+                        <button
+                            className={`navbar-hamburger ${menuOpen ? 'open' : ''}`}
+                            onClick={toggleMenu}
+                            aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                            aria-expanded={menuOpen}
+                            type="button"
+                        >
+                            <span className="hamburger-line" />
+                            <span className="hamburger-line" />
+                            <span className="hamburger-line" />
+                        </button>
+
+                        {/* Desktop Navigation Links */}
+                        <div className="navbar-links">
+                    <div className="navbar-links-main">
+                        <Link to="/" className="navbar-link" onClick={closeMenu}>
+                            Home
+                        </Link>
+                        <Link to="/about" className="navbar-link" onClick={closeMenu}>
+                            About
+                        </Link>
+                        <Link to="/events" className="navbar-link" onClick={closeMenu}>
+                            Events
+                        </Link>
+                        <Link to="/members" className="navbar-link" onClick={closeMenu}>
+                            Members
+                        </Link>
+
+                        {/* Explore Item with Dropdown */}
+                        <div
+                            className={`navbar-item-with-dropdown ${dropdownActive ? 'active' : ''}`}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            <a
+                                href="#explore"
+                                className="navbar-link navbar-dropdown-trigger"
+                                onClick={handleDropdownClick}
+                            >
+                                Explore <span className="mobile-only-caret" aria-hidden="true">▼</span>
+                            </a>
+
+                            <div className={`navbar-dropdown-menu ${dropdownActive ? 'open' : ''}`}>
+                                <Link
+                                    to="/recruitment"
+                                    className="dropdown-item"
+                                    onClick={closeMenu}
+                                >
+                                    Recruitment
+                                </Link>
+                                <Link to="/merch" className="dropdown-item" onClick={closeMenu}>
+                                    Merchandise
+                                </Link>
+                                <Link to="/blogs" className="dropdown-item" onClick={closeMenu}>
+                                    Blog &amp; Dispatches
+                                </Link>
+                                <Link to="/contact" className="dropdown-item" onClick={closeMenu}>
+                                    Contact Us
+                                </Link>
+                            </div>
                         </div>
-                    )}
-                </li>
-                <li className="navbar__item">
-                    <Link to="/merch" className="navbar__link">Merch</Link>
-                </li>
-            </ul>
+                    </div>
+
+                    {/* Auth / Dashboard section */}
+                    <div className="navbar-auth-section">
+                        {isAuthenticated ? (
+                            <Link to="/user-dashboard" className="navbar-link" onClick={closeMenu}>
+                                Dashboard
+                            </Link>
+                        ) : (
+                            <Link to="/login" className="navbar-link navbar-login-link" onClick={closeMenu}>
+                                Log In
+                            </Link>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            {/* Mobile Staggered Menu Component */}
+            <StaggeredMenu
+                isOpen={menuOpen}
+                onClose={closeMenu}
+                showToggle={false}
+                position="right"
+                items={mobileMenuItems}
+                socialItems={mobileSocialItems}
+                displaySocials={true}
+                displayItemNumbering={true}
+                colors={['#1c1033', '#3b1d7d', '#5227FF']}
+                accentColor="#7c3aed"
+                isFixed={true}
+                className="navbar-staggered-menu"
+            />
         </nav>
     );
 }
+

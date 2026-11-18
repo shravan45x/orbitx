@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import './SettingsOverlay.css';
 import { useToast } from '../toast/Toast';
@@ -28,6 +29,30 @@ export default function SettingsOverlay({ isOpen, onClose }: SettingsOverlayProp
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [confirmText, setConfirmText] = useState('');
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const originalBodyOverflow = document.body.style.overflow;
+        const originalHtmlOverflow = document.documentElement.style.overflow;
+        const originalTouchAction = document.body.style.touchAction;
+
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') handleClose();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.body.style.overflow = originalBodyOverflow;
+            document.documentElement.style.overflow = originalHtmlOverflow;
+            document.body.style.touchAction = originalTouchAction;
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isOpen]);
 
     const handleClose = () => {
         if (isDeleting) return; // Don't close while deleting
@@ -87,10 +112,18 @@ export default function SettingsOverlay({ isOpen, onClose }: SettingsOverlayProp
 
     if (!isOpen) return null;
 
-    return (
+    return createPortal(
         <div
             className={`settings-overlay ${isClosing ? 'settings-overlay--closing' : ''}`}
             onClick={handleBackdropClick}
+            onWheel={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            onTouchMove={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            role="dialog"
+            aria-modal="true"
         >
             <div className="settings-overlay__modal">
                 <button
@@ -185,6 +218,7 @@ export default function SettingsOverlay({ isOpen, onClose }: SettingsOverlayProp
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

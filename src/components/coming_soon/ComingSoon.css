@@ -1,0 +1,166 @@
+/* OrbitX Coming Soon Page */
+/* OrbitX Rules: 4px border-radius, completely flat (NO box-shadow), NO hover animations */
+
+.coming-soon-container {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #000000;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(2rem, 5vw, 4rem) 1.5rem;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.coming-soon-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+    pointer-events: none;
+}
+
+.coming-soon-content {
+    position: relative;
+    z-index: 2;
+    max-width: 640px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.coming-soon-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #a855f7;
+    background: rgba(168, 85, 247, 0.08);
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    border-radius: 4px;
+    padding: 0.35rem 0.85rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+
+.coming-soon-pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #a855f7;
+    box-shadow: 0 0 8px #a855f7;
+}
+
+.coming-soon-title {
+    font-family: var(--font-expanded, sans-serif);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 1rem 0;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.coming-soon-subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0 0 2.5rem 0;
+    max-width: 520px;
+}
+
+.coming-soon-highlight-box {
+    width: 100%;
+    background-color: #08080a;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 4px;
+    padding: 2rem;
+    text-align: left;
+    box-sizing: border-box;
+    margin-bottom: 2.5rem;
+}
+
+.coming-soon-highlight-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.coming-soon-tag {
+    color: #10b981;
+}
+
+.coming-soon-event {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.coming-soon-highlight-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.5rem 0;
+}
+
+.coming-soon-highlight-desc {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0 0 1.5rem 0;
+}
+
+.coming-soon-quiz-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: #ffffff;
+    color: #000000;
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.95rem 1.5rem;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: background-color 0.15s ease;
+}
+
+.coming-soon-quiz-btn:hover {
+    background-color: #e4e4e7;
+}
+
+.coming-soon-footer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.04em;
+}
+
+@media (max-width: 600px) {
+    .coming-soon-highlight-box {
+        padding: 1.5rem 1.25rem;
+    }
+
+    .coming-soon-highlight-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+    }
+}

@@ -15,7 +15,7 @@
 
 .manager-header h1 {
     font-size: 3rem;
-    font-family: 'Berkshire Swash', serif;
+    font-family: var(--font-sans);
     color: #a94eff;
     margin-bottom: 0.5rem;
 }

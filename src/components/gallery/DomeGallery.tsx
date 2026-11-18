@@ -176,7 +176,7 @@ export default function DomeGallery({
     minRadius = 600,
     maxRadius = Infinity,
     padFactor = 0.25,
-    overlayBlurColor = '#060010',
+    overlayBlurColor = '#000000ff',
     maxVerticalRotationDeg = DEFAULTS.maxVerticalRotationDeg,
     dragSensitivity = DEFAULTS.dragSensitivity,
     enlargeTransitionMs = DEFAULTS.enlargeTransitionMs,
@@ -606,6 +606,7 @@ export default function DomeGallery({
         const overlay = document.createElement('div');
         overlay.className = 'enlarge';
         overlay.style.position = 'absolute';
+        overlay.style.pointerEvents = 'auto';
         overlay.style.left = frameR.left - mainR.left + 'px';
         overlay.style.top = frameR.top - mainR.top + 'px';
         overlay.style.width = frameR.width + 'px';
@@ -674,16 +675,27 @@ export default function DomeGallery({
             const exploreBtn = document.createElement('button');
             exploreBtn.className = 'enlarge__explore-btn';
             exploreBtn.textContent = 'Explore';
-            exploreBtn.onclick = (e) => {
+            exploreBtn.type = 'button';
+            exploreBtn.style.pointerEvents = 'auto';
+
+            const handleExplore = (e: Event) => {
                 e.stopPropagation();
+                e.preventDefault();
 
                 // Add expanded class and hide button
                 overlay.classList.add('enlarge--expanded');
+                overlay.style.left = '50%';
+                overlay.style.top = '50%';
+                overlay.style.transform = 'translate(-50%, -50%)';
+                overlay.style.width = '';
+                overlay.style.height = '';
+                overlay.style.pointerEvents = 'auto';
                 exploreBtn.style.display = 'none';
 
                 // Create expanded content immediately - CSS handles the blend animation
                 const expandedContent = document.createElement('div');
                 expandedContent.className = 'enlarge__expanded';
+                expandedContent.style.pointerEvents = 'auto';
 
                 const leftPanel = document.createElement('div');
                 leftPanel.className = 'enlarge__expanded-left';
@@ -902,6 +914,12 @@ export default function DomeGallery({
                 expandedContent.appendChild(rightPanel);
                 overlay.appendChild(expandedContent);
             };
+
+            exploreBtn.onclick = handleExplore;
+            exploreBtn.onpointerdown = (e) => e.stopPropagation();
+            exploreBtn.onpointerup = (e) => e.stopPropagation();
+            exploreBtn.onmousedown = (e) => e.stopPropagation();
+            exploreBtn.ontouchstart = (e) => e.stopPropagation();
             infoOverlay.appendChild(exploreBtn);
         }
 
@@ -1133,6 +1151,7 @@ export default function DomeGallery({
         <div
             ref={rootRef}
             className="sphere-root"
+            data-theme="dark"
             style={
                 {
                     ['--segments-x' as string]: segments,

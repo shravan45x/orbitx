@@ -5,6 +5,7 @@ export interface EventData {
     type: string;
     title: string;
     description: string;
+    shortDescription?: string;
     date: string;
     venue: string;
     time: string;
@@ -18,6 +19,7 @@ export interface EventData {
     images?: string[];
     amount?: number; // Event fee in rupees (0 or undefined = free)
     venueUrl?: string; // URL to the venue location (e.g., Google Maps link)
+    capacity?: number | string;
 }
 
 // Props for EventModal component

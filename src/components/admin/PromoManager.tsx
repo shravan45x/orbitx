@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { collection, query, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage } from '../../services/firebase/config';
@@ -32,6 +33,31 @@ export default function PromoManager({ isOpen, onClose, adminOrbitId }: PromoMan
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const dropZoneRef = useRef<HTMLDivElement>(null);
+
+    // Viewport and background scroll locking
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const originalBodyOverflow = document.body.style.overflow;
+        const originalHtmlOverflow = document.documentElement.style.overflow;
+        const originalTouchAction = document.body.style.touchAction;
+
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') handleClose();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.body.style.overflow = originalBodyOverflow;
+            document.documentElement.style.overflow = originalHtmlOverflow;
+            document.body.style.touchAction = originalTouchAction;
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isOpen]);
 
     // Fetch promotions
     useEffect(() => {
@@ -240,10 +266,18 @@ export default function PromoManager({ isOpen, onClose, adminOrbitId }: PromoMan
 
     if (!isOpen) return null;
 
-    return (
+    return createPortal(
         <div
             className={`promo-manager ${isClosing ? 'promo-manager--closing' : ''}`}
             onClick={handleBackdropClick}
+            onWheel={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            onTouchMove={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            role="dialog"
+            aria-modal="true"
         >
             <div className="promo-manager__modal">
                 <div className="promo-manager__header">
@@ -458,6 +492,7 @@ export default function PromoManager({ isOpen, onClose, adminOrbitId }: PromoMan
                     )}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

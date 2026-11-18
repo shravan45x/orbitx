@@ -1,24 +1,23 @@
 import './App.css'
-import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-import AdaptiveGalaxy from '../components/background/AdaptiveGalaxy'
 import Navbar from '../components/layout/Navbar'
-import MobileNav from '../components/layout/MobileNav'
 import MobileHeader from '../components/layout/MobileHeader'
-import LoginButton from '../components/layout/LoginButton'
 import PageTransition from '../components/effects/PageTransition'
 import Home from '../pages/home/Home'
-import About from '../pages/About'
-import Events from '../pages/Events'
-import Members from '../pages/Members'
-import Join from '../pages/Join'
-import Contact from '../pages/Contact'
-import Merch from '../pages/Merch'
-import Login from '../pages/Login'
-import Signup from '../pages/Signup'
-import ForgotPassword from '../pages/ForgotPassword'
-import Dashboard from '../pages/Dashboard'
-import ManageMembers from '../pages/ManageMembers'
+import About from '../pages/about/About'
+import Events from '../pages/events/Events'
+import Members from '../pages/members/Members'
+import Recruitment from '../pages/recruitment/Recruitment'
+import Contact from '../pages/contact/Contact'
+import Merch from '../pages/merch/Merch'
+import Blog from '../pages/blog/Blog'
+import Login from '../pages/auth/Login'
+import Onboarding from '../pages/auth/Onboarding'
+import ForgotPassword from '../pages/auth/ForgotPassword'
+import Dashboard from '../pages/dashboard/Dashboard'
+import AdminDashboard from '../pages/admin/AdminDashboard'
+import ManageMembers from '../pages/manage-members/ManageMembers'
 import AdminSetup from '../components/admin/AdminSetup'
 import ApplicationsManager from '../components/admin/ApplicationsManager'
 import ManageQueries from '../components/admin/ManageQueries'
@@ -28,25 +27,10 @@ import MerchManager from '../components/admin/MerchManager'
 import { ToastProvider } from '../components/toast/Toast'
 import { AuthProvider } from '../contexts/AuthContext'
 import { SnowfallProvider } from '../contexts/SnowfallContext'
-import { RecruitmentProvider, useRecruitment } from '../contexts/RecruitmentContext'
-import { ProtectedRoute, PublicRoute } from '../components/auth'
-import BackButton from '../components/navigation/BackButton'
+import { RecruitmentProvider } from '../contexts/RecruitmentContext'
+import { ThemeProvider } from '../contexts/ThemeContext'
+import { ProtectedRoute, PublicRoute, AdminRoute } from '../components/auth'
 import ScrollToTop from '../components/navigation/ScrollToTop'
-
-// Component to handle Join route protection based on recruitment status
-function JoinRoute() {
-  const { isRecruitmentOpen, isLoading } = useRecruitment();
-
-  if (isLoading) {
-    return null; // Or a loading spinner
-  }
-
-  if (!isRecruitmentOpen) {
-    return <Navigate to="/about" replace />;
-  }
-
-  return <Join />;
-}
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -59,9 +43,12 @@ function AnimatedRoutes() {
         <Route path="/about" element={<PageTransition><About /></PageTransition>} />
         <Route path="/events" element={<PageTransition><Events /></PageTransition>} />
         <Route path="/members" element={<PageTransition><Members /></PageTransition>} />
-        <Route path="/join" element={<PageTransition><JoinRoute /></PageTransition>} />
+        <Route path="/recruitment" element={<PageTransition><Recruitment /></PageTransition>} />
+        <Route path="/join" element={<PageTransition><Recruitment /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         <Route path="/merch" element={<PageTransition><Merch /></PageTransition>} />
+        <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
+        <Route path="/blogs" element={<PageTransition><Blog /></PageTransition>} />
 
         {/* Auth Routes - Redirect to dashboard if already logged in */}
         <Route path="/login" element={
@@ -69,7 +56,8 @@ function AnimatedRoutes() {
             <PageTransition><Login /></PageTransition>
           </PublicRoute>
         } />
-        <Route path="/signup" element={<PageTransition><Signup /></PageTransition>} />
+        <Route path="/onboarding" element={<PageTransition><Onboarding /></PageTransition>} />
+        <Route path="/signup" element={<PageTransition><Onboarding /></PageTransition>} />
         <Route path="/forgot-password" element={<PageTransition><ForgotPassword /></PageTransition>} />
 
         {/* Admin Setup - URL only access (no frontend link) */}
@@ -81,65 +69,79 @@ function AnimatedRoutes() {
             <PageTransition><Dashboard /></PageTransition>
           </ProtectedRoute>
         } />
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <PageTransition><Dashboard /></PageTransition>
+          </ProtectedRoute>
+        } />
 
         {/* Admin Protected Routes */}
+        <Route path="/admin" element={
+          <AdminRoute>
+            <PageTransition><AdminDashboard /></PageTransition>
+          </AdminRoute>
+        } />
         <Route path="/manage-user-applications" element={
-          <ProtectedRoute>
+          <AdminRoute>
             <PageTransition><ApplicationsManager /></PageTransition>
-          </ProtectedRoute>
+          </AdminRoute>
         } />
         <Route path="/manage-user-queries" element={
-          <ProtectedRoute>
+          <AdminRoute>
             <PageTransition><ManageQueries /></PageTransition>
-          </ProtectedRoute>
+          </AdminRoute>
         } />
         <Route path="/manage-merch-orders" element={
-          <ProtectedRoute>
+          <AdminRoute>
             <PageTransition><MerchOrdersManager /></PageTransition>
-          </ProtectedRoute>
+          </AdminRoute>
         } />
         <Route path="/manage-merch" element={
-          <ProtectedRoute>
+          <AdminRoute>
             <PageTransition><MerchManager /></PageTransition>
-          </ProtectedRoute>
+          </AdminRoute>
         } />
         <Route path="/manage-members" element={
-          <ProtectedRoute>
+          <AdminRoute requireSuperAdmin>
             <PageTransition><ManageMembers /></PageTransition>
-          </ProtectedRoute>
+          </AdminRoute>
         } />
       </Routes>
     </AnimatePresence>
   );
 }
 
-function AppContent() {
+function NavigationLayout() {
   return (
-    <HashRouter>
-      <AdaptiveGalaxy />
+    <>
       <ScrollToTop />
-      <div className="desktop-only-back-button">
-        <BackButton />
-      </div>
       <Navbar />
       <MobileHeader />
-      <LoginButton />
       <AnimatedRoutes />
-      <MobileNav />
-    </HashRouter>
+    </>
+  );
+}
+
+function AppContent() {
+  return (
+    <BrowserRouter>
+      <NavigationLayout />
+    </BrowserRouter>
   );
 }
 
 function App() {
   return (
     <AuthProvider>
-      <SnowfallProvider>
-        <RecruitmentProvider>
-          <ToastProvider>
-            <AppContent />
-          </ToastProvider>
-        </RecruitmentProvider>
-      </SnowfallProvider>
+      <ThemeProvider>
+        <SnowfallProvider>
+          <RecruitmentProvider>
+            <ToastProvider>
+              <AppContent />
+            </ToastProvider>
+          </RecruitmentProvider>
+        </SnowfallProvider>
+      </ThemeProvider>
     </AuthProvider>
   )
 }

@@ -6,6 +6,7 @@
  */
 
 import { useState, useMemo, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { type MemberData } from '../../hooks/useMembersData';
 import './MobileGallery.css';
@@ -95,23 +96,28 @@ export default function MobileGallery({
         return hasAcademics || hasSocials;
     };
 
-    // Auto-scroll modal into view when opened
+    // Viewport lock & Escape key
     useEffect(() => {
-        if (selectedMember && modalRef.current) {
-            setTimeout(() => {
-                modalRef.current?.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
-            }, 100);
+        if (!selectedMember) return;
 
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
+        const originalBodyOverflow = document.body.style.overflow;
+        const originalHtmlOverflow = document.documentElement.style.overflow;
+        const originalTouchAction = document.body.style.touchAction;
+
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') handleClose();
+        };
+        window.addEventListener('keydown', handleKeyDown);
 
         return () => {
-            document.body.style.overflow = '';
+            document.body.style.overflow = originalBodyOverflow;
+            document.documentElement.style.overflow = originalHtmlOverflow;
+            document.body.style.touchAction = originalTouchAction;
+            window.removeEventListener('keydown', handleKeyDown);
         };
     }, [selectedMember]);
 
@@ -177,8 +183,19 @@ export default function MobileGallery({
             )}
 
             {/* Member Detail Modal */}
-            {selectedMember && (
-                <div className="mobile-gallery__modal-overlay" onClick={handleClose}>
+            {selectedMember && createPortal(
+                <div
+                    className="mobile-gallery__modal-overlay"
+                    onClick={handleClose}
+                    onWheel={(e) => {
+                        if (e.target === e.currentTarget) e.preventDefault();
+                    }}
+                    onTouchMove={(e) => {
+                        if (e.target === e.currentTarget) e.preventDefault();
+                    }}
+                    role="dialog"
+                    aria-modal="true"
+                >
                     <div
                         ref={modalRef}
                         className={`mobile-gallery__modal ${isExpanded ? 'mobile-gallery__modal--expanded' : ''}`}
@@ -328,7 +345,8 @@ export default function MobileGallery({
                             )}
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );

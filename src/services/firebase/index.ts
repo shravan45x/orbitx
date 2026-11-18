@@ -6,6 +6,5 @@ export { default as app } from './config';
 
 // Auth services
 export * from './auth';
-
-// Firestore services will be added here
-// export * from './firestore';
+export * from './recruitment';
+export * from './newsletter';

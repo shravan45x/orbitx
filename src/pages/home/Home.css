@@ -1,0 +1,1286 @@
+/* ===== Archival Scientific Astronomical Layout (OrbitX Design System) ===== */
+/* Flat 4px design - strictly NO hover transforms/animations, NO box-shadows (as per orbitx.md) */
+
+.home-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    box-sizing: border-box;
+}
+
+/* ===== Spanned Wire Header Utility & Dedicated Transition Section ===== */
+.wire-divider {
+    width: 100%;
+    padding: clamp(2.25rem, 4vh, 3.5rem) clamp(1.25rem, 3.5vw, 2.5rem);
+    background-color: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+}
+
+.wire-divider__container {
+    max-width: 1360px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.spanned-wire-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(1rem, 2.5vw, 2.5rem);
+    width: 100%;
+    min-width: 0;
+}
+
+.spanned-wire-word {
+    font-size: clamp(2rem, 5.5vw, 5.5rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    white-space: nowrap;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.spanned-wire-line {
+    flex-grow: 1;
+    height: 1.5px;
+    background-color: var(--border-strong);
+    min-width: 20px;
+}
+
+/* ===== Archival Hero Section (Ref Screenshot 1: Triptych Layout) ===== */
+.hero {
+    min-height: 90vh;
+    min-height: 90dvh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: clamp(5rem, 8vh, 6.5rem) clamp(1.25rem, 3.5vw, 2.5rem) clamp(3.5rem, 6vh, 5.5rem);
+    box-sizing: border-box;
+    container-type: inline-size;
+}
+
+.hero__container {
+    max-width: 1360px;
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: start;
+    min-width: 0;
+}
+
+.hero__left-col {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vh, 2.5rem);
+    min-width: 0;
+    margin-top: clamp(2rem, 5vh, 4.5rem);
+}
+
+.hero__micro-quote {
+    font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+    line-height: 1.65;
+    color: var(--text-muted);
+    max-width: 440px;
+    margin: 0;
+}
+
+.hero__headline-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    min-width: 0;
+}
+
+.hero__title {
+    font-size: clamp(2rem, 4.6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.hero__tagline {
+    font-size: clamp(1.8rem, 4.2vw, 4.2rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1;
+}
+
+.hero__right-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.hero__triptych-frame {
+    width: 100%;
+    max-width: 520px;
+    border-radius: var(--radius, 4px);
+    overflow: hidden;
+    background-color: transparent;
+    position: relative;
+}
+
+.hero__triptych-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transform: scaleX(-1);
+}
+
+.hero__sub-block {
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 2vh, 1.5rem);
+    max-width: 480px;
+    width: 100%;
+    min-width: 0;
+}
+
+.hero__description {
+    font-size: clamp(0.88rem, 1.15vw, 0.95rem);
+    line-height: 1.65;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.hero__ctas {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.75rem, 1.5vw, 1rem);
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.hero__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem clamp(1.25rem, 2.5vw, 1.85rem);
+    font-size: clamp(0.88rem, 1.1vw, 0.95rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    border-radius: var(--radius, 4px);
+    text-decoration: none;
+    min-height: 48px;
+    min-width: clamp(110px, 25%, 130px);
+    box-sizing: border-box;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.hero__cta--primary {
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: 1px solid var(--btn-primary-bg);
+}
+
+.hero__cta--secondary {
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+    border: 1px solid var(--btn-secondary-border);
+}
+
+.hero__cta:focus-visible {
+    outline: 2px solid rgba(168, 85, 247, 0.7);
+    outline-offset: 3px;
+    border-radius: var(--radius, 4px);
+}
+
+/* ===== Inquiry Section (Ref Screenshot 4: Blueprint Background + Plates) ===== */
+.inquiry {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: clamp(4.5rem, 7vh, 7.5rem) clamp(1.25rem, 3.5vw, 2.5rem) clamp(3.5rem, 6vh, 6.5rem);
+    border-top: 1px solid var(--border-color);
+    box-sizing: border-box;
+    container-type: inline-size;
+}
+
+.inquiry__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.inquiry__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to left, var(--bg-primary) 0%, transparent 28%);
+    pointer-events: none;
+}
+
+.inquiry__bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center left;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block;
+    filter: grayscale(1);
+    -webkit-mask-image: linear-gradient(to left, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 45%);
+    mask-image: linear-gradient(to left, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 45%);
+}
+
+.inquiry__container {
+    position: relative;
+    z-index: 2;
+    max-width: 1360px;
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 3.5vw, 3.5rem);
+    align-items: center;
+    min-width: 0;
+}
+
+.inquiry__content-col {
+    grid-column: 2;
+    min-width: 0;
+}
+
+.inquiry__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.inquiry__tag {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+}
+
+.inquiry__title {
+    font-size: clamp(1.8rem, 3.2vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+    margin: 0.25rem 0 0.5rem;
+}
+
+.inquiry__text {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 0 2rem;
+}
+
+.inquiry__plates-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    width: 100%;
+}
+
+.inquiry__sub-plate {
+    position: relative;
+    border-radius: var(--radius, 4px);
+    overflow: hidden;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+}
+
+.inquiry__sub-plate-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ===== Community Section (Ref Screenshot 3: Synergy & Stellar with Observatory Background) ===== */
+.synergy {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: clamp(4.5rem, 7vh, 7.5rem) clamp(1.25rem, 3.5vw, 2.5rem) clamp(3.5rem, 6vh, 6.5rem);
+    border-top: 1px solid var(--border-color);
+    box-sizing: border-box;
+    container-type: inline-size;
+}
+
+.synergy__bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.synergy__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--bg-primary) 0%, transparent 28%);
+    pointer-events: none;
+}
+
+.synergy__bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block;
+    filter: grayscale(1);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 45%);
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 45%);
+}
+
+.synergy__container {
+    position: relative;
+    z-index: 2;
+    max-width: 1360px;
+    width: 100%;
+    margin: 0 auto;
+    min-width: 0;
+}
+
+.synergy__body {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: center;
+    margin-top: 0;
+    min-width: 0;
+}
+
+.synergy__left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    grid-column: 1;
+}
+
+.synergy__subtag {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.synergy__heading {
+    font-size: clamp(2rem, 3.6vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin: 0.25rem 0 1.25rem;
+}
+
+.synergy__description {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 0 2rem;
+}
+
+.synergy__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-strong);
+    padding-bottom: 0.35rem;
+}
+
+.synergy__link:focus-visible {
+    outline: 2px solid rgba(168, 85, 247, 0.7);
+    outline-offset: 3px;
+    border-radius: var(--radius, 4px);
+}
+
+.synergy__station-card {
+    position: relative;
+    border-radius: var(--radius, 4px);
+    overflow: hidden;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+}
+
+.synergy__station-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+/* ===== What's Happening Section (Ref Screenshot 2: Saturn Altar Monument) ===== */
+.happening {
+    width: 100%;
+    padding: clamp(4.5rem, 7vh, 7.5rem) clamp(1.25rem, 3.5vw, 2.5rem) clamp(3.5rem, 6vh, 6.5rem);
+    border-top: 1px solid var(--border-color);
+    box-sizing: border-box;
+    text-align: center;
+    container-type: inline-size;
+}
+
+.happening__container {
+    max-width: 1360px;
+    width: 100%;
+    margin: 0 auto;
+    min-width: 0;
+}
+
+.happening__header-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: clamp(2rem, 3.5vh, 3.5rem);
+    min-width: 0;
+}
+
+.happening__top-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+}
+
+.happening__headline {
+    font-size: clamp(1.6rem, 3.6vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    max-width: 960px;
+    margin: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.happening__highlight {
+    color: var(--text-dim);
+}
+
+.happening__monument-wrap {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-radius: var(--radius, 4px);
+    overflow: hidden;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    max-height: clamp(260px, 48vh, 520px);
+}
+
+.happening__monument-video {
+    width: 100%;
+    height: auto;
+    max-height: clamp(260px, 48vh, 520px);
+    display: block;
+    border: none;
+    outline: none;
+    pointer-events: none;
+    user-select: none;
+    object-fit: cover;
+}
+
+.happening__events-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: clamp(1rem, 1.8vw, 1.5rem);
+    max-width: 1100px;
+    margin: 2.5rem auto 0;
+    text-align: left;
+    min-width: 0;
+}
+
+.happening__mini-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius, 4px);
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.happening__mini-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.happening__mini-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+    margin: 0;
+}
+
+.happening__mini-desc {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.happening__actions {
+    margin-top: 2.75rem;
+    display: flex;
+    justify-content: center;
+}
+
+.happening__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text-primary);
+    text-decoration: none;
+    border: 1px solid var(--border-strong);
+    padding: 0.85rem 1.85rem;
+    border-radius: var(--radius, 4px);
+    background-color: transparent;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.happening__cta:focus-visible {
+    outline: 2px solid rgba(168, 85, 247, 0.7);
+    outline-offset: 3px;
+    border-radius: var(--radius, 4px);
+}
+
+/* ===== Alliance / Proof Section (Ref Screenshot 5: 5-Plate Strip + Footer Wire) ===== */
+.alliance {
+    width: 100%;
+    padding: clamp(4.5rem, 7vh, 7.5rem) clamp(1.25rem, 3.5vw, 2.5rem) clamp(3.5rem, 6vh, 6.5rem);
+    border-top: 1px solid var(--border-color);
+    box-sizing: border-box;
+    container-type: inline-size;
+}
+
+.alliance__container {
+    max-width: 1360px;
+    width: 100%;
+    margin: 0 auto;
+    min-width: 0;
+}
+
+.alliance__top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    max-width: 1360px;
+    margin: 0 auto 2.5rem;
+}
+
+.alliance__subtext {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0;
+}
+
+.alliance__archive-link {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.alliance__strip-frame {
+    max-width: 1360px;
+    margin: 0 auto;
+    border-radius: var(--radius, 4px);
+    overflow: hidden;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+}
+
+.alliance__strip-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.alliance__stats-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem 2.5rem;
+    flex-wrap: wrap;
+    margin: 3.5rem auto 4.5rem;
+    max-width: 1360px;
+}
+
+.alliance__stat-unit {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.alliance__stat-unit strong {
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.alliance__stat-unit span {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.alliance__stat-dot {
+    font-size: 1.8rem;
+    color: var(--border-strong);
+    opacity: 0.6;
+    user-select: none;
+}
+
+.alliance__footer-wire {
+    margin-top: 1rem;
+}
+
+/* ==========================================================================
+   MULTI-DEVICE RESPONSIVE SUITE
+   - Ultrawide monitors (21:9 / 32:9)
+   - Tri-fold devices (Huawei Mate XT, Samsung Tri-Fold: 3 segments)
+   - Dual-screen / Spanned foldables (Surface Duo, Z Fold spanned: 2 segments)
+   - Foldables Unfolded & Tablets (600px to 1180px: Galaxy Z Fold, Pixel Fold, iPad)
+   - Standard Mobile Phones (under 600px: single-column stack)
+   - Ultra-Tall / Narrow Cover Screens (Z Fold cover, 21:9 - 23.5:9, < 380px)
+   - Short landscape viewports (phones in landscape: height < 520px)
+   - Modular Container Queries for multitasking / split-screen (< 540px)
+   ========================================================================== */
+
+/* ===== 1. Ultrawide & Super-Ultrawide Monitors (21:9, 32:9) ===== */
+@media (min-width: 1920px) {
+    .hero__container,
+    .inquiry__container,
+    .synergy__container,
+    .happening__container,
+    .alliance__container {
+        max-width: 1440px;
+    }
+
+    .hero {
+        padding: clamp(6rem, 10vh, 8rem) clamp(2.5rem, 5vw, 4rem);
+    }
+}
+
+/* ===== 2. Hardware Viewport Segments API: Dual-Screen Spanned ===== */
+@media (horizontal-viewport-segments: 2) {
+    .hero__container {
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(3rem, 6vw, 5rem);
+        align-items: center;
+    }
+
+    .inquiry__container {
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(3rem, 6vw, 5rem);
+    }
+
+    .synergy__body {
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(3rem, 6vw, 5rem);
+    }
+
+    .alliance__top-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+    }
+}
+
+/* ===== 3. Hardware Viewport Segments API: Tri-Fold Spanned ===== */
+@media (horizontal-viewport-segments: 3) {
+    .hero__container {
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 3.5rem;
+        align-items: center;
+    }
+
+    .inquiry__container {
+        grid-template-columns: 1fr 1fr;
+        gap: 3.5rem;
+    }
+
+    .synergy__body {
+        grid-template-columns: 1fr 1.15fr;
+        gap: 3.5rem;
+    }
+
+    .happening__events-strip {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+/* ===== 4. Foldables Unfolded & Tablets (600px to 1180px) ===== */
+/* Covers: Galaxy Z Fold 4/5/6/7/8 inner (744px+), Pixel Fold & Pixel 9 Pro Fold (836px+),
+   OnePlus Open (800px), Surface Duo (720px/1114px), iPad Mini (768px), iPad Air (820px) */
+@media (min-width: 600px) and (max-width: 1180px) {
+    .hero {
+        min-height: auto;
+        padding: clamp(3.5rem, 5.5vh, 5rem) clamp(1.25rem, 3vw, 2.25rem);
+    }
+
+    .hero__container {
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: clamp(1.5rem, 3vw, 2.5rem);
+        align-items: center;
+    }
+
+    .hero__left-col {
+        gap: clamp(1rem, 1.8vh, 1.5rem);
+        min-width: 0;
+    }
+
+    .hero__micro-quote {
+        font-size: clamp(0.78rem, 1.25vw, 0.88rem);
+        line-height: 1.5;
+        max-width: 100%;
+    }
+
+    .hero__headline-block {
+        margin-top: 0;
+        gap: 0.35rem;
+        min-width: 0;
+    }
+
+    .hero__title {
+        font-size: clamp(1.75rem, 3.4vw, 2.75rem);
+        line-height: 1.08;
+    }
+
+    .hero__tagline {
+        font-size: clamp(1.55rem, 3vw, 2.35rem);
+    }
+
+    .hero__sub-block {
+        gap: clamp(0.75rem, 1.5vh, 1.15rem);
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .hero__description {
+        font-size: clamp(0.82rem, 1.2vw, 0.9rem);
+        line-height: 1.55;
+    }
+
+    .hero__ctas {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .hero__cta {
+        padding: 0.75rem 1.35rem;
+        font-size: 0.88rem;
+        min-height: 44px;
+        min-width: 110px;
+    }
+
+    .hero__right-col {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .hero__triptych-frame {
+        max-width: clamp(280px, 42vw, 440px);
+        margin: 0 auto;
+    }
+
+    .inquiry {
+        padding: clamp(3.5rem, 5vh, 5rem) clamp(1.25rem, 3vw, 2.25rem);
+    }
+
+    .inquiry__container {
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(1.5rem, 3vw, 2.5rem);
+        align-items: center;
+    }
+
+    .inquiry__title {
+        font-size: clamp(1.6rem, 2.8vw, 2.25rem);
+    }
+
+    .inquiry__text {
+        font-size: 0.88rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .inquiry__plates-row {
+        gap: 0.85rem;
+    }
+
+    .synergy {
+        padding: clamp(3.5rem, 5vh, 5rem) clamp(1.25rem, 3vw, 2.25rem);
+    }
+
+    .synergy__body {
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(1.5rem, 3vw, 2.5rem);
+        align-items: center;
+        margin-top: 2.25rem;
+    }
+
+    .synergy__heading {
+        font-size: clamp(1.75rem, 3vw, 2.5rem);
+    }
+
+    .synergy__description {
+        font-size: 0.88rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .happening {
+        padding: clamp(3.5rem, 5vh, 5rem) clamp(1.25rem, 3vw, 2.25rem);
+    }
+
+    .happening__headline {
+        font-size: clamp(1.5rem, 2.8vw, 2.4rem);
+    }
+
+    .happening__events-strip {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    .happening__mini-card {
+        padding: 1.25rem 1rem;
+    }
+
+    .happening__mini-title {
+        font-size: 0.95rem;
+    }
+
+    .happening__mini-desc {
+        font-size: 0.8rem;
+    }
+
+    .alliance {
+        padding: clamp(3.5rem, 5vh, 5rem) clamp(1.25rem, 3vw, 2.25rem);
+    }
+
+    .alliance__top-row {
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .alliance__stats-bar {
+        gap: 1.5rem 2rem;
+        margin: 2.5rem auto 3rem;
+    }
+
+    .alliance__stat-unit strong {
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+    }
+}
+
+/* ===== 5. Standard Mobile Phones (Under 600px) ===== */
+@media (max-width: 599px) {
+    .hero {
+        padding: 4rem clamp(1rem, 4vw, 1.25rem) 3rem;
+        min-height: auto;
+    }
+
+    .hero__container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .hero__right-col {
+        order: -1;
+        align-items: center;
+        width: 100%;
+    }
+
+    .hero__left-col {
+        order: 1;
+    }
+
+    .hero__triptych-frame {
+        max-width: clamp(240px, 72vw, 340px);
+        margin: 0 auto;
+    }
+
+    .hero__headline-block {
+        margin-top: 0;
+    }
+
+    .hero__title {
+        font-size: clamp(2rem, 7.5vw, 2.75rem);
+    }
+
+    .hero__tagline {
+        font-size: clamp(1.8rem, 7vw, 2.5rem);
+    }
+
+    .spanned-wire-word {
+        font-size: clamp(1.3rem, 5.2vw, 2.4rem);
+    }
+
+    .hero__sub-block {
+        max-width: 100%;
+    }
+
+    .hero__ctas {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.75rem;
+    }
+
+    .hero__cta {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .inquiry {
+        padding: 4rem clamp(1rem, 4vw, 1.25rem) 3rem;
+    }
+
+    .inquiry__bg {
+        width: 100%;
+        opacity: 0.18;
+    }
+
+    .inquiry__bg::after {
+        background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 25%, var(--bg-primary) 100%);
+    }
+
+    .inquiry__bg-img {
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    }
+
+    .inquiry__container {
+        grid-template-columns: 1fr;
+        gap: 2.25rem;
+    }
+
+    .inquiry__content-col {
+        grid-column: 1;
+    }
+
+    .inquiry__plates-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .synergy {
+        padding: 4rem clamp(1rem, 4vw, 1.25rem) 3rem;
+    }
+
+    .synergy__bg {
+        width: 100%;
+        opacity: 0.18;
+    }
+
+    .synergy__bg::after {
+        background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 25%, var(--bg-primary) 100%);
+    }
+
+    .synergy__bg-img {
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    }
+
+    .synergy__body {
+        grid-template-columns: 1fr;
+        gap: 2.25rem;
+        margin-top: 2.5rem;
+    }
+
+    .happening {
+        padding: 4rem clamp(1rem, 4vw, 1.25rem) 3rem;
+    }
+
+    .happening__events-strip {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .alliance {
+        padding: 4rem clamp(1rem, 4vw, 1.25rem) 3rem;
+    }
+
+    .alliance__top-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .alliance__stats-bar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem 1rem;
+        text-align: center;
+        margin: 2rem auto 2.5rem;
+    }
+
+    .alliance__stat-dot {
+        display: none;
+    }
+
+    .alliance__stat-unit {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .alliance__stat-unit strong {
+        font-size: clamp(1.8rem, 6.5vw, 2.4rem);
+    }
+}
+
+/* ===== 6. Ultra-Tall / Narrow Cover Screens (Galaxy Z Fold Cover, Xperia 21:9, < 380px) ===== */
+@media (max-width: 380px) {
+    .hero {
+        padding: 4.25rem 0.85rem 2.5rem;
+    }
+
+    .hero__title {
+        font-size: clamp(1.75rem, 7.8vw, 2.15rem);
+        line-height: 1.1;
+    }
+
+    .hero__tagline {
+        font-size: clamp(1.55rem, 7vw, 1.95rem);
+    }
+
+    .hero__micro-quote,
+    .hero__description {
+        font-size: 0.84rem;
+        line-height: 1.55;
+    }
+
+    .hero__triptych-frame {
+        max-width: clamp(200px, 68vw, 260px);
+        margin: 0 auto;
+    }
+
+    .spanned-wire-header {
+        gap: 0.5rem;
+    }
+
+    .spanned-wire-word {
+        font-size: clamp(1.1rem, 5.2vw, 1.5rem);
+        letter-spacing: -0.02em;
+    }
+
+    .inquiry,
+    .synergy,
+    .happening,
+    .alliance {
+        padding: 3.5rem 0.85rem 2.5rem;
+    }
+
+    .inquiry__title {
+        font-size: clamp(1.5rem, 6.5vw, 1.9rem);
+    }
+
+    .synergy__heading {
+        font-size: clamp(1.6rem, 6.8vw, 2.1rem);
+    }
+
+    .happening__headline {
+        font-size: clamp(1.4rem, 6vw, 1.85rem);
+    }
+
+    .happening__mini-card {
+        padding: 1.25rem 1rem;
+    }
+
+    .alliance__stats-bar {
+        gap: 1.25rem 0.75rem;
+    }
+
+    .alliance__stat-unit strong {
+        font-size: 1.75rem;
+    }
+
+    .alliance__stat-unit span {
+        font-size: 0.78rem;
+    }
+}
+
+/* ===== 7. Short Landscape Viewports (Phones in Landscape: Height < 520px) ===== */
+@media (max-height: 520px) and (orientation: landscape) {
+    .hero {
+        min-height: auto;
+        padding: 3.5rem clamp(1.25rem, 3vw, 2rem) 2.25rem;
+    }
+
+    .hero__container {
+        grid-template-columns: 1.25fr 0.75fr;
+        gap: 1.75rem;
+        align-items: center;
+    }
+
+    .hero__micro-quote {
+        display: none;
+    }
+
+    .hero__headline-block {
+        margin-top: 0;
+        gap: 0.25rem;
+    }
+
+    .hero__title {
+        font-size: clamp(1.6rem, 3.8vw, 2.25rem);
+        line-height: 1.05;
+    }
+
+    .hero__tagline {
+        font-size: clamp(1.4rem, 3.4vw, 2rem);
+    }
+
+    .hero__description {
+        font-size: 0.85rem;
+        line-height: 1.45;
+    }
+
+    .hero__sub-block {
+        gap: 0.75rem;
+    }
+
+    .hero__triptych-frame {
+        max-width: 260px;
+    }
+
+    .inquiry,
+    .synergy,
+    .happening,
+    .alliance {
+        padding: 2.75rem clamp(1.25rem, 3vw, 2rem) 2.25rem;
+    }
+
+    .happening__monument-wrap,
+    .happening__monument-video {
+        max-height: 220px;
+    }
+
+    .happening__header-block {
+        margin-bottom: 1.75rem;
+    }
+
+    .synergy__body {
+        margin-top: 2rem;
+        gap: 2rem;
+    }
+}
+
+/* ===== 8. Container Query Adaptation (Narrow Multi-Window / Split-Screen Panes) ===== */
+@container (max-width: 540px) {
+    .hero__container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .hero__right-col {
+        order: -1;
+        align-items: center;
+        width: 100%;
+    }
+
+    .hero__left-col {
+        order: 1;
+    }
+
+    .hero__triptych-frame {
+        max-width: clamp(220px, 70cqw, 320px);
+        margin: 0 auto;
+    }
+
+    .hero__ctas {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .hero__cta {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .inquiry__container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .inquiry__content-col {
+        grid-column: 1;
+    }
+
+    .synergy__body {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}

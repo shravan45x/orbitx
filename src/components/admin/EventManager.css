@@ -1,19 +1,25 @@
 .event-manager {
     position: fixed;
     inset: 0;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
-    background: rgba(0, 0, 0, 0.7);
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    z-index: 1000;
-    animation: eventFadeIn 0.3s ease;
+    z-index: 999999;
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
+    box-sizing: border-box;
+    animation: eventFadeIn 0.2s ease;
 }
 
 .event-manager--closing {
-    animation: eventFadeOut 0.3s ease forwards;
+    animation: eventFadeOut 0.2s ease forwards;
 }
 
 @keyframes eventFadeIn {
@@ -37,24 +43,27 @@
 }
 
 .event-manager__modal {
-    width: 100%;
-    max-width: 950px;
-    max-height: 85vh;
+    width: min(92vw, 950px);
+    max-height: min(90vh, 780px);
+    margin: auto;
     display: flex;
     flex-direction: column;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
+    background: var(--bg-card, #121214);
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+    border-radius: var(--radius, 4px);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    animation: eventSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: none;
+    box-sizing: border-box;
     overflow: hidden;
+    touch-action: auto;
+    animation: eventSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes eventSlideIn {
     from {
         opacity: 0;
-        transform: translateY(20px) scale(0.98);
+        transform: translateY(10px) scale(0.99);
     }
 
     to {
@@ -83,24 +92,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    background: transparent;
-    border: none;
-    border-radius: 10px;
+    width: 32px;
+    height: 32px;
+    background: var(--bg-secondary, rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+    border-radius: var(--radius, 4px);
     cursor: pointer;
-    transition: all 0.2s ease;
+    box-shadow: none;
+    transition: color 0.15s ease, border-color 0.15s ease;
 }
 
 .event-manager__close svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     color: rgba(255, 255, 255, 0.5);
-    transition: color 0.2s ease;
-}
-
-.event-manager__close:hover {
-    background: rgba(255, 255, 255, 0.05);
 }
 
 .event-manager__close:hover svg {
@@ -112,6 +117,9 @@
     flex: 1;
     padding: 1.5rem 2rem;
     overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Toolbar */
@@ -128,11 +136,12 @@
     padding: 0.75rem 1.25rem;
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     border: none;
-    border-radius: 24px;
+    border-radius: var(--radius, 4px);
     color: #fff;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
+    box-shadow: none;
     transition: all 0.2s ease;
 }
 

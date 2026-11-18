@@ -1,34 +1,26 @@
-import type { EventData, EventCardProps } from './types';
+import React from 'react';
+import type { EventCardProps } from './types';
+import { parseEventDate } from './dateUtils';
 import './EventCard.css';
 
-// Get badge class based on event type
-const getDefaultBadgeClass = (type: string): string => {
-    switch (type) {
-        case 'Workshop': return 'event-card__badge--workshop';
-        case 'Talk': return 'event-card__badge--talk';
-        case 'Competition': return 'event-card__badge--competition';
-        case 'Outreach': return 'event-card__badge--outreach';
-        default: return '';
-    }
-};
+export default function EventCard({
+    event,
+    onClick,
+    onRegisterClick,
+    isRegistered,
+    onDownloadPass
+}: EventCardProps) {
+    const parsedDate = parseEventDate(event.date);
+    const hasImage = event.images && event.images.length > 0;
+    const isFree = !event.amount || event.amount === 0;
+    const priceBadgeText = isFree ? 'FREE' : `₹${event.amount}`;
+    const displayType = (event.type || 'Workshop').toUpperCase();
+    const venueText = event.venue || 'Zeal College, Pune';
 
-// Get display tag based on event type (always show type, not "Past")
-const getTag = (event: EventData): string => {
-    return event.type || 'Event';
-};
-
-// Get price tier class based on amount
-const getPriceTierClass = (amount?: number): string => {
-    if (!amount || amount === 0) return 'event-card__price--free';
-    if (amount <= 100) return 'event-card__price--low';
-    if (amount <= 300) return 'event-card__price--medium';
-    if (amount <= 500) return 'event-card__price--high';
-    return 'event-card__price--premium';
-};
-
-export default function EventCard({ event, onClick, variant = 'full', getTypeBadgeClass, onRegisterClick, isRegistered, onDownloadPass }: EventCardProps) {
-    const getBadgeClass = getTypeBadgeClass || getDefaultBadgeClass;
-    const isTeaser = variant === 'teaser';
+    // Format capacity display
+    const capacityText = event.capacity
+        ? (typeof event.capacity === 'number' ? `${event.capacity} spots` : String(event.capacity))
+        : (event.mode === 'Online' ? 'Unlimited spots' : '120 spots');
 
     const handleClick = () => {
         onClick(event);
@@ -36,7 +28,7 @@ export default function EventCard({ event, onClick, variant = 'full', getTypeBad
 
     const handleRegisterClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        if (!event.registrationOpen) return;
+        if (event.isPast || !event.registrationOpen) return;
         if (onRegisterClick) {
             onRegisterClick(event);
         }
@@ -49,82 +41,125 @@ export default function EventCard({ event, onClick, variant = 'full', getTypeBad
         }
     };
 
-    // Render footer action based on registration status
-    const renderFooterAction = () => {
+    const renderActionBtn = () => {
         if (event.isPast) {
             return (
-                <span className="event-card__status event-card__status--closed">
-                    Event Completed
+                <span className="event-card__action-label event-card__action-label--closed">
+                    Completed
                 </span>
             );
         }
 
         if (isRegistered) {
             return (
-                <>
-                    <span className="event-card__status event-card__status--registered">
-                        Registered ✓
-                    </span>
-                    <button
-                        className="event-card__cta event-card__cta--download"
-                        onClick={handleDownloadPass}
-                    >
-                        Download Pass
-                    </button>
-                </>
+                <button
+                    type="button"
+                    className="event-card__cta-btn event-card__cta-btn--download"
+                    onClick={handleDownloadPass}
+                    title="Download entry pass"
+                >
+                    Pass →
+                </button>
+            );
+        }
+
+        if (event.registrationOpen) {
+            return (
+                <button
+                    type="button"
+                    className="event-card__cta-btn"
+                    onClick={handleRegisterClick}
+                >
+                    Register →
+                </button>
             );
         }
 
         return (
-            <>
-                <span className={`event-card__status ${event.registrationOpen ? 'event-card__status--open' : 'event-card__status--closed'}`}>
-                    {event.registrationOpen ? 'Registration Open' : 'Closed'}
-                </span>
-                <button
-                    className={`event-card__cta ${!event.registrationOpen ? 'event-card__cta--disabled' : ''}`}
-                    onClick={handleRegisterClick}
-                    disabled={!event.registrationOpen}
-                >
-                    {event.registrationOpen ? 'Register →' : 'Closed'}
-                </button>
-            </>
+            <span className="event-card__action-label event-card__action-label--closed">
+                Closed
+            </span>
         );
     };
 
     return (
-        <div
-            className="event-card"
+        <article
+            className={`event-card ${event.isPast ? 'event-card--past' : ''}`}
             onClick={handleClick}
+            tabIndex={0}
+            role="button"
+            aria-label={`${event.title} - ${displayType}`}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleClick();
+                }
+            }}
         >
-            <div className="event-card__image">
-                {event.images && event.images.length > 0 && (
-                    <img src={event.images[0]} alt={event.title} />
+            {/* Top Image with Floating Pill Badges */}
+            <div className="event-card__media">
+                {hasImage ? (
+                    <img
+                        src={event.images![0]}
+                        alt={event.title}
+                        className="event-card__img"
+                        loading="lazy"
+                    />
+                ) : (
+                    <div className="event-card__img-placeholder">
+                        <span className="event-card__img-placeholder-icon">✦</span>
+                    </div>
                 )}
-            </div>
-            <div className="event-card__content">
-                <div className="event-card__header">
-                    <span className={`event-card__tag ${getBadgeClass(event.type)}`}>
-                        {getTag(event)}
-                    </span>
-                    <span className={`event-card__price ${getPriceTierClass(event.amount)}`}>
-                        {event.amount && event.amount > 0 ? `₹${event.amount}` : 'Free'}
+
+                <div className="event-card__badges-overlay">
+                    <span className="event-card__badge-pill event-card__badge-pill--price">
+                        {priceBadgeText}
                     </span>
                 </div>
-                <h3 className="event-card__title">{event.title}</h3>
-
-                {isTeaser ? (
-                    <p className="event-card__desc">
-                        {event.description.substring(0, 100)}{event.description.length > 100 ? '...' : ''}
-                    </p>
-                ) : (
-                    <>
-                        <p className="event-card__desc">{event.date}</p>
-                        <div className="event-card__footer">
-                            {renderFooterAction()}
-                        </div>
-                    </>
-                )}
             </div>
-        </div>
+
+            {/* Middle 2-Column: Date on Left, Title & Summary on Right */}
+            <div className="event-card__body">
+                <div className="event-card__date-col" aria-label={`Date: ${parsedDate.fullDate}`}>
+                    <span className="event-card__date-month">{parsedDate.monthShort}</span>
+                    <strong className="event-card__date-day">{parsedDate.day}</strong>
+                    <span className="event-card__date-year">{parsedDate.year}</span>
+                </div>
+
+                <div className="event-card__info-col">
+                    <h3 className="event-card__title" title={event.title}>{event.title}</h3>
+                    <p className="event-card__summary">
+                        {event.description}
+                    </p>
+                </div>
+            </div>
+
+            {/* Bottom Hairline Divider & Meta Bar */}
+            <div className="event-card__footer">
+                <div className="event-card__meta-group">
+                    <div className="event-card__meta-item event-card__meta-item--venue" title={venueText}>
+                        <svg className="event-card__meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        <span className="event-card__meta-text">{venueText}</span>
+                    </div>
+
+                    <div className="event-card__meta-item event-card__meta-item--capacity" title={capacityText}>
+                        <svg className="event-card__meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                        <span className="event-card__meta-text">{capacityText}</span>
+                    </div>
+                </div>
+
+                <div className="event-card__action-wrap">
+                    {renderActionBtn()}
+                </div>
+            </div>
+        </article>
     );
 }

@@ -1,0 +1,82 @@
+/* ===== OrbitX Merchandise Page — Coming Soon Mode ===== */
+/* Flat design, strict 4px radius, no hover movement, no shadows per orbitx.md */
+
+.merch-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.merch-coming-soon {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(6rem, 15vh, 12rem) clamp(1.25rem, 4vw, 3rem);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.merch-coming-soon__text {
+    font-family: var(--font-condensed, 'D-DIN Condensed', sans-serif);
+    font-size: clamp(2rem, 5.5vw, 4.5rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1.1;
+
+    /* Moving Glare / Light Sweep Effect — dynamic across light/dark themes */
+    background: var(--text-glare-bg);
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textGlare 3.5s ease-in-out infinite;
+}
+
+@keyframes textGlare {
+    0% {
+        background-position: 150% 0;
+    }
+    100% {
+        background-position: -150% 0;
+    }
+}
+
+@media (max-width: 599px) {
+    .merch-coming-soon {
+        padding: clamp(5rem, 12vh, 8rem) clamp(1rem, 4vw, 1.25rem);
+    }
+
+    .merch-coming-soon__text {
+        font-size: clamp(1.8rem, 8vw, 2.75rem);
+        letter-spacing: -0.01em;
+        word-break: break-word;
+    }
+}
+
+@media (max-width: 380px) {
+    .merch-coming-soon {
+        padding: 4.5rem 0.85rem;
+    }
+
+    .merch-coming-soon__text {
+        font-size: clamp(1.4rem, 7.5vw, 1.85rem);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .merch-coming-soon__text {
+        animation: none;
+        background: none;
+        -webkit-text-fill-color: var(--text-primary);
+        color: var(--text-primary);
+    }
+}

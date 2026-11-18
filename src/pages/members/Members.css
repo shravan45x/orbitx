@@ -1,0 +1,434 @@
+/* ===== Members Page (OrbitX Scientific Aerospace Design System) ===== */
+/* Flat 4px design - strictly NO hover transforms/animations, NO box-shadows (as per orbitx.md) */
+
+.members-page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    box-sizing: border-box;
+}
+
+/* ===== Members Hero (60% / 40% Layout Grounded to Bottom Border) ===== */
+.members-hero {
+    width: 100%;
+    min-height: auto;
+    display: flex;
+    align-items: flex-end;
+    padding: clamp(4.75rem, 6.5vh, 5.75rem) clamp(1.25rem, 3.5vw, 2.5rem) 0;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    overflow: hidden;
+}
+
+.members-hero__container {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: flex-end;
+    min-width: 0;
+}
+
+/* --- Left Column: 60% Image (Grounded directly to bottom border) --- */
+.members-hero__left-col {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    line-height: 0;
+}
+
+.members-hero__reveal-wrap {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    line-height: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.members-hero__img {
+    width: 100%;
+    height: auto;
+    max-height: clamp(420px, 68vh, 660px);
+    object-fit: cover;
+    object-position: bottom left;
+    display: block;
+    vertical-align: bottom;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    transform: scaleX(-1);
+}
+
+/* --- Right Column: 40% Narrative & Identity --- */
+.members-hero__right-col {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.25rem, 2.5vh, 2rem);
+    width: 100%;
+    min-width: 0;
+    align-self: center;
+    padding-top: clamp(0.5rem, 1.5vh, 1.5rem);
+    padding-bottom: clamp(1.5rem, 3vh, 2.5rem);
+}
+
+.members-hero__tag {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+}
+
+.members-hero__headline-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.members-hero__title {
+    font-family: var(--font-condensed);
+    font-size: clamp(2.5rem, 5.5vw, 4.8rem);
+    line-height: 0.96;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.members-hero__sub-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 520px;
+    width: 100%;
+    min-width: 0;
+}
+
+.members-hero__subtitle {
+    font-family: var(--font-sans);
+    font-size: clamp(16px, 1.1vw, 17px);
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* ===== Edge-to-Edge Console Bar (Docked Controls) ===== */
+.members-console-bar {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2.5rem;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 40;
+}
+
+.members-console-bar__container {
+    max-width: 1360px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.members-console-bar__left {
+    flex: 1;
+    max-width: 480px;
+}
+
+.members-console-bar__right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.members-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.members-filter-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Search input overrides for OrbitX 4px flat system */
+.members-console-bar .search-input {
+    width: 100%;
+}
+
+.members-console-bar .search-input__field {
+    border-radius: var(--radius, 4px);
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    height: 42px;
+    box-sizing: border-box;
+}
+
+.members-console-bar .search-input__field:focus {
+    border-color: var(--border-strong);
+    outline: 1px solid var(--border-strong);
+    outline-offset: 1px;
+}
+
+/* Filter dropdown overrides */
+.members-console-bar .filter-dropdown__trigger {
+    border-radius: var(--radius, 4px);
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    height: 42px;
+    box-sizing: border-box;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.members-console-bar .filter-dropdown__trigger:hover {
+    border-color: var(--border-strong);
+}
+
+.members-console-bar .filter-dropdown__trigger:focus-visible {
+    outline: 2px solid var(--border-strong);
+    outline-offset: 2px;
+}
+
+.members-console-bar .filter-dropdown__menu {
+    border-radius: var(--radius, 4px);
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+    z-index: 100;
+}
+
+.members-console-bar .filter-dropdown__item {
+    border-radius: var(--radius, 4px);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.members-console-bar .filter-dropdown__item:hover,
+.members-console-bar .filter-dropdown__item--selected {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* ===== Dome Gallery Stage ===== */
+.members-gallery {
+    width: 100%;
+    min-height: 750px;
+    height: 85vh;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #000000;
+}
+
+[data-theme="light"] .members-gallery {
+    background-color: #000000;
+}
+
+.members-gallery .scroll-reveal {
+    width: 100%;
+    height: 100%;
+}
+
+/* ==========================================================================
+   MULTI-DEVICE RESPONSIVE SUITE
+   - Ultrawide monitors (21:9 / 32:9)
+   - Foldables Unfolded & Tablets (600px to 1180px: Galaxy Z Fold, Pixel Fold, iPad)
+   - Standard Mobile Phones (under 600px)
+   - Ultra-Tall / Narrow Cover Screens (< 380px)
+   ========================================================================== */
+
+/* ===== 1. Ultrawide Monitors ===== */
+@media (min-width: 1920px) {
+    .members-hero__container,
+    .members-console-bar__container {
+        max-width: 1440px;
+    }
+}
+
+/* ===== 2. Foldables Unfolded & Tablets (600px to 1180px) ===== */
+@media (min-width: 600px) and (max-width: 1180px) {
+    .members-hero {
+        padding: clamp(4.5rem, 5.5vh, 5.25rem) clamp(1.25rem, 3vw, 2.25rem) 0;
+        align-items: flex-end;
+        min-height: auto;
+    }
+
+    .members-hero__container {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+        gap: clamp(1.75rem, 3vw, 2.5rem);
+        align-items: flex-end;
+    }
+
+    .members-hero__right-col {
+        padding-bottom: clamp(1rem, 2.5vh, 2rem);
+    }
+
+    .members-hero__title {
+        font-size: clamp(2rem, 3.8vw, 3.2rem);
+    }
+
+    .members-console-bar {
+        padding: 0.85rem clamp(1.25rem, 3vw, 2.25rem);
+    }
+
+    .members-console-bar__container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+    }
+
+    .members-console-bar__left {
+        max-width: 380px;
+    }
+
+    .members-console-bar__right {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+}
+
+/* ===== 3. Standard Mobile Phones (Under 600px) ===== */
+@media (max-width: 599px) {
+    .members-hero {
+        padding: clamp(5.25rem, 7.5vh, 6.25rem) clamp(1rem, 4vw, 1.25rem) 0;
+        min-height: auto;
+        align-items: flex-end;
+    }
+
+    .members-hero__container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        align-items: flex-end;
+    }
+
+    .members-hero__left-col {
+        order: 2;
+        align-items: flex-end;
+        width: 100%;
+    }
+
+    .members-hero__right-col {
+        order: 1;
+        padding-top: 0.5rem;
+        padding-bottom: 0;
+        gap: 1rem;
+    }
+
+    .members-hero__img {
+        max-height: clamp(240px, 45vh, 320px);
+        object-position: bottom center;
+    }
+
+    .members-hero__title {
+        font-size: clamp(2rem, 7.8vw, 2.75rem);
+    }
+
+    .members-hero__subtitle {
+        font-size: 0.92rem;
+        line-height: 1.6;
+    }
+
+    .members-console-bar {
+        padding: 0.85rem clamp(1rem, 4vw, 1.25rem);
+    }
+
+    .members-console-bar__container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .members-console-bar__left {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .members-console-bar__right {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .members-filter-group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .members-filter-group .filter-dropdown {
+        flex: 1;
+        width: 100%;
+    }
+
+    .members-gallery {
+        min-height: auto;
+        height: auto;
+        padding-bottom: 4rem;
+    }
+}
+
+/* ===== 4. Ultra-Tall / Narrow Cover Screens (< 380px) ===== */
+@media (max-width: 380px) {
+    .members-hero {
+        padding: 5rem 0.85rem 0;
+    }
+
+    .members-hero__title {
+        font-size: clamp(1.65rem, 7.8vw, 2.1rem);
+        line-height: 1.1;
+    }
+
+    .members-hero__img {
+        max-height: 220px;
+    }
+
+    .members-console-bar {
+        padding: 0.75rem 0.85rem;
+    }
+
+    .members-filter-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

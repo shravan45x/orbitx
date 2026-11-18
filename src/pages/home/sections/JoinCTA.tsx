@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom';
-import { useRecruitment } from '../../../contexts/RecruitmentContext';
 import './JoinCTA.css';
 
 export default function JoinCTA() {
-    const { isRecruitmentOpen } = useRecruitment();
 
     return (
         <section className="join-cta">
@@ -14,17 +12,10 @@ export default function JoinCTA() {
                     Join OrbitX and become part of a community passionate about space, science, and discovery.
                 </p>
                 <div className="join-cta__buttons">
-                    {isRecruitmentOpen ? (
-                        <Link to="/join" className="join-cta__btn join-cta__btn--primary">
-                            Join OrbitX
-                            <span className="join-cta__btn-arrow">→</span>
-                        </Link>
-                    ) : (
-                        <Link to="/contact" className="join-cta__btn join-cta__btn--primary">
-                            Get in Touch
-                            <span className="join-cta__btn-arrow">→</span>
-                        </Link>
-                    )}
+                    <Link to="/recruitment" className="join-cta__btn join-cta__btn--primary">
+                        Join OrbitX
+                        <span className="join-cta__btn-arrow">→</span>
+                    </Link>
                     <Link to="/about" className="join-cta__btn join-cta__btn--secondary">
                         Learn More
                     </Link>

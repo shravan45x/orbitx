@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import './ProfileOverlay.css';
 import { useToast } from '../toast/Toast';
 import CopyButton from '../copy/CopyButton';
@@ -19,9 +20,7 @@ type ProfileOverlayProps = {
 
 export default function ProfileOverlay({ isOpen, onClose }: ProfileOverlayProps) {
     const { showToast } = useToast();
-    const { profile
-
-    } = useAuth();
+    const { profile } = useAuth();
     const [isClosing, setIsClosing] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editForm, setEditForm] = useState({
@@ -52,13 +51,26 @@ export default function ProfileOverlay({ isOpen, onClose }: ProfileOverlayProps)
     }, [profile]);
 
     useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
+        if (!isOpen) return;
+
+        const originalBodyOverflow = document.body.style.overflow;
+        const originalHtmlOverflow = document.documentElement.style.overflow;
+        const originalTouchAction = document.body.style.touchAction;
+
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') handleClose();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+
         return () => {
-            document.body.style.overflow = '';
+            document.body.style.overflow = originalBodyOverflow;
+            document.documentElement.style.overflow = originalHtmlOverflow;
+            document.body.style.touchAction = originalTouchAction;
+            window.removeEventListener('keydown', handleKeyDown);
         };
     }, [isOpen]);
 
@@ -181,10 +193,18 @@ export default function ProfileOverlay({ isOpen, onClose }: ProfileOverlayProps)
 
     if (!isOpen || !profile) return null;
 
-    return (
+    return createPortal(
         <div
             className={`profile-overlay ${isClosing ? 'profile-overlay--closing' : ''}`}
             onClick={handleBackdropClick}
+            onWheel={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            onTouchMove={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            role="dialog"
+            aria-modal="true"
         >
             <div className="profile-overlay__modal">
                 <button className="profile-overlay__close" onClick={handleClose}>
@@ -408,6 +428,7 @@ export default function ProfileOverlay({ isOpen, onClose }: ProfileOverlayProps)
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

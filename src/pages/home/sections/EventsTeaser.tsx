@@ -66,6 +66,7 @@ export default function EventsTeaser() {
                         isPast: data.isPast ?? false,
                         images: data.images || [],
                         amount: data.amount,
+                        capacity: data.capacity,
                     });
                 });
 

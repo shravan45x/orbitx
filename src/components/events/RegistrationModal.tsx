@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { EventData } from './types';
 import './RegistrationModal.css';
 
@@ -83,6 +84,31 @@ export default function RegistrationModal({
     const [isClosing, setIsClosing] = useState(false);
 
     const isPaidEvent = event.amount && event.amount > 0;
+
+    // Viewport and background scroll locking
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const originalBodyOverflow = document.body.style.overflow;
+        const originalHtmlOverflow = document.documentElement.style.overflow;
+        const originalTouchAction = document.body.style.touchAction;
+
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') handleClose();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.body.style.overflow = originalBodyOverflow;
+            document.documentElement.style.overflow = originalHtmlOverflow;
+            document.body.style.touchAction = originalTouchAction;
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isOpen]);
 
     // Load saved progress from localStorage
     useEffect(() => {
@@ -220,10 +246,18 @@ export default function RegistrationModal({
 
     if (!isOpen) return null;
 
-    return (
+    return createPortal(
         <div
             className={`registration-modal-overlay ${isClosing ? 'registration-modal-overlay--closing' : ''}`}
             onClick={handleOverlayClick}
+            onWheel={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            onTouchMove={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            role="dialog"
+            aria-modal="true"
         >
             <div className={`registration-modal ${isClosing ? 'registration-modal--closing' : ''}`}>
                 {/* Header */}
@@ -376,6 +410,7 @@ export default function RegistrationModal({
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

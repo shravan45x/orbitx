@@ -3,6 +3,7 @@
  * Clean and minimal UI
  */
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Cropper from 'react-cropper';
 import type { ReactCropperElement } from 'react-cropper';
 import 'react-cropper/node_modules/cropperjs/dist/cropper.css';
@@ -54,17 +55,44 @@ export default function ImageCropper({
         );
     }, [onCrop]);
 
-    // Escape key to close
+    // Viewport lock & Escape key
     useEffect(() => {
+        const originalBodyOverflow = document.body.style.overflow;
+        const originalHtmlOverflow = document.documentElement.style.overflow;
+        const originalTouchAction = document.body.style.touchAction;
+
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') onCancel();
         };
         window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.body.style.overflow = originalBodyOverflow;
+            document.documentElement.style.overflow = originalHtmlOverflow;
+            document.body.style.touchAction = originalTouchAction;
+            window.removeEventListener('keydown', handleKeyDown);
+        };
     }, [onCancel]);
 
-    return (
-        <div className="image-cropper-overlay">
+    return createPortal(
+        <div
+            className="image-cropper-overlay"
+            onClick={(e) => {
+                if (e.target === e.currentTarget) onCancel();
+            }}
+            onWheel={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            onTouchMove={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            role="dialog"
+            aria-modal="true"
+        >
             <div className="image-cropper-modal">
                 {/* Header */}
                 <div className="image-cropper-header">
@@ -119,6 +147,7 @@ export default function ImageCropper({
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

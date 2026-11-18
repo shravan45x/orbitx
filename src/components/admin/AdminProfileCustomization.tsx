@@ -2,6 +2,7 @@
  * AdminProfileCustomization - A component for admins to customize their public member card profile
  */
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../toast/Toast';
 import { uploadAdminDisplayImage, deleteAdminDisplayImage, getDefaultAdminAvatar } from '../../services/firebase/adminStorage';
@@ -117,6 +118,31 @@ export default function AdminProfileCustomization({ isOpen, onClose }: AdminProf
 
         fetchProfileData();
     }, [isOpen, adminProfile?.uid, showToast]);
+
+    // Viewport lock & Escape key
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const originalBodyOverflow = document.body.style.overflow;
+        const originalHtmlOverflow = document.documentElement.style.overflow;
+        const originalTouchAction = document.body.style.touchAction;
+
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && !showCropper) onClose();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.body.style.overflow = originalBodyOverflow;
+            document.documentElement.style.overflow = originalHtmlOverflow;
+            document.body.style.touchAction = originalTouchAction;
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isOpen, onClose, showCropper]);
 
     // Handle file selection - show cropper instead of uploading directly
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -257,8 +283,19 @@ export default function AdminProfileCustomization({ isOpen, onClose }: AdminProf
 
     const graduationYears = generateGraduationYears();
 
-    return (
-        <div className="admin-profile-modal-overlay" onClick={onClose}>
+    return createPortal(
+        <div
+            className="admin-profile-modal-overlay"
+            onClick={onClose}
+            onWheel={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            onTouchMove={(e) => {
+                if (e.target === e.currentTarget) e.preventDefault();
+            }}
+            role="dialog"
+            aria-modal="true"
+        >
             <div className="admin-profile-modal" onClick={(e) => e.stopPropagation()}>
                 <div className="admin-profile-modal__header">
                     <div className="admin-profile-modal__header-content">
@@ -653,6 +690,7 @@ export default function AdminProfileCustomization({ isOpen, onClose }: AdminProf
                     />
                 )}
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

@@ -1,3 +1,85 @@
+/* ===== OrbitX Global Typography: D-DIN Aerospace Font System ===== */
+@font-face {
+  font-family: 'D-DIN';
+  src: url('/font/D-DIN.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'D-DIN';
+  src: url('/font/D-DIN-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'D-DIN';
+  src: url('/font/D-DIN-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'D-DIN Condensed';
+  src: url('/font/D-DINCondensed.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'D-DIN Condensed';
+  src: url('/font/D-DINCondensed-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'D-DIN Exp';
+  src: url('/font/D-DINExp.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'D-DIN Exp';
+  src: url('/font/D-DINExp-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'D-DIN Exp';
+  src: url('/font/D-DINExp-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Aliases for case compatibility */
+@font-face {
+  font-family: 'D-Din';
+  src: url('/font/D-DIN.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'D-Din';
+  src: url('/font/D-DIN-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 *,
 *::before,
 *::after {
@@ -7,7 +89,12 @@
 }
 
 :root {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-sans: 'D-DIN', 'D-Din', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-condensed: 'D-DIN Condensed', 'D-DIN', sans-serif;
+  --font-expanded: 'D-DIN Exp', 'D-DIN', sans-serif;
+  --font-family: var(--font-sans);
+
+  font-family: var(--font-sans);
   line-height: 1.5;
   font-weight: 400;
 
@@ -15,16 +102,154 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Global Border Radius */
+  --radius: 4px;
+  --radius-sm: 4px;
+  --radius-md: 4px;
+  --radius-lg: 4px;
+  --radius-xl: 4px;
+  --radius-pill: 4px;
+
+  /* Default Theme: Dark */
+  --bg-primary: #000000;
+  --bg-secondary: #0c0c0e;
+  --bg-card: #000000;
+  --border-color: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  /* Palette Tokens: Pure Black, Architectural Warm Paper, Burnt Orange */
+  --color-black: #000000;
+  --color-paper: #F3EEE3;
+  --color-orange: #D9541E;
+  --color-orange-glow: rgba(217, 84, 30, 0.2);
+
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-card: #000000;
+  --border-color: rgba(243, 238, 227, 0.12);
+  --border-subtle: rgba(243, 238, 227, 0.08);
+  --border-strong: rgba(243, 238, 227, 0.25);
+  --text-primary: #F3EEE3;
+  --text-secondary: rgba(243, 238, 227, 0.85);
+  --text-muted: rgba(243, 238, 227, 0.65);
+  --text-dim: rgba(243, 238, 227, 0.45);
+  --accent-color: #D9541E;
+  --btn-primary-bg: #D9541E;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-border: rgba(243, 238, 227, 0.25);
+  --btn-secondary-text: #F3EEE3;
+
+  /* Moving text glare gradients */
+  --text-glare-bg: linear-gradient(
+    115deg,
+    rgba(243, 238, 227, 0.35) 0%,
+    rgba(243, 238, 227, 0.35) 38%,
+    #ffffff 50%,
+    rgba(243, 238, 227, 0.35) 62%,
+    rgba(243, 238, 227, 0.35) 100%
+  );
 }
 
-/* Hide scrollbar across the entire website */
+[data-theme="dark"] {
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-card: #000000;
+  --border-color: rgba(243, 238, 227, 0.12);
+  --border-subtle: rgba(243, 238, 227, 0.08);
+  --border-strong: rgba(243, 238, 227, 0.25);
+  --text-primary: #F3EEE3;
+  --text-secondary: rgba(243, 238, 227, 0.85);
+  --text-muted: rgba(243, 238, 227, 0.65);
+  --text-dim: rgba(243, 238, 227, 0.45);
+  --accent-color: #D9541E;
+  --btn-primary-bg: #D9541E;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-border: rgba(243, 238, 227, 0.25);
+  --btn-secondary-text: #F3EEE3;
+
+  --text-glare-bg: linear-gradient(
+    115deg,
+    rgba(243, 238, 227, 0.35) 0%,
+    rgba(243, 238, 227, 0.35) 38%,
+    #ffffff 50%,
+    rgba(243, 238, 227, 0.35) 62%,
+    rgba(243, 238, 227, 0.35) 100%
+  );
+}
+
+[data-theme="light"] {
+  --bg-primary: #F3EEE3;
+  --bg-secondary: #e9e3d6;
+  --bg-card: #F3EEE3;
+  --border-color: rgba(0, 0, 0, 0.12);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-strong: rgba(0, 0, 0, 0.22);
+  --text-primary: #000000;
+  --text-secondary: #1a1a1a;
+  --text-muted: rgba(0, 0, 0, 0.65);
+  --text-dim: rgba(0, 0, 0, 0.45);
+  --accent-color: #D9541E;
+  --btn-primary-bg: #D9541E;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-border: rgba(0, 0, 0, 0.2);
+  --btn-secondary-text: #000000;
+
+  --text-glare-bg: linear-gradient(
+    115deg,
+    rgba(0, 0, 0, 0.28) 0%,
+    rgba(0, 0, 0, 0.28) 38%,
+    #000000 50%,
+    rgba(0, 0, 0, 0.28) 62%,
+    rgba(0, 0, 0, 0.28) 100%
+  );
+}
+
+/* Base Global Typography & Scrollbar */
 html,
 body {
+  font-family: var(--font-sans);
   overflow-x: hidden;
   scrollbar-width: none;
   /* Firefox */
   -ms-overflow-style: none;
   /* IE and Edge */
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-sans);
+}
+
+/* Circular View Transition from Top-Center */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 99999;
 }
 
 html::-webkit-scrollbar,
@@ -47,7 +272,7 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   /* Dynamic viewport height for mobile */
-  background-color: #000;
+  background-color: var(--bg-primary);
 }
 
 #root {
@@ -55,6 +280,32 @@ body {
   min-height: 100dvh;
   position: relative;
   z-index: 1;
+}
+
+/* ===== Global Grain Texture on Entire Viewport ===== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 99999;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 160px 160px;
+}
+
+[data-theme="light"] body::before {
+  opacity: 0.04;
+}
+
+/* Tactile archival grain on all imagery and illustrations */
+img,
+picture,
+video {
+  image-rendering: auto;
 }
 
 /* ===== Touch Device Styles ===== */
@@ -70,16 +321,10 @@ body {
 }
 
 *:focus-visible {
-  outline: 2px solid rgba(168, 85, 247, 0.5);
+  outline: 2px solid rgb(81, 101, 255);
   outline-offset: 2px;
 }
 
-/* Desktop-only elements */
-@media (max-width: 768px) {
-  .desktop-only-back-button {
-    display: none !important;
-  }
-}
 
 /* Disable hover effects on touch devices */
 @media (hover: none) and (pointer: coarse) {

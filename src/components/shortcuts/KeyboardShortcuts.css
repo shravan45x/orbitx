@@ -1,13 +1,22 @@
+/* ===== OrbitX Keyboard Shortcuts (Strict Flat 4px System) ===== */
+
 .shortcuts-overlay {
     position: fixed;
     inset: 0;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    z-index: 2000;
+    z-index: 999999;
+    padding: 1.5rem;
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
+    box-sizing: border-box;
     animation: shortcutsFadeIn 0.2s ease;
 }
 
@@ -19,7 +28,6 @@
     from {
         opacity: 0;
     }
-
     to {
         opacity: 1;
     }
@@ -29,21 +37,27 @@
     from {
         opacity: 1;
     }
-
     to {
         opacity: 0;
     }
 }
 
 .shortcuts-modal {
-    width: 100%;
-    max-width: 320px;
+    position: relative;
+    width: min(92vw, 360px);
+    max-height: min(90vh, 520px);
+    margin: auto;
     padding: 1.5rem;
-    background: rgba(0, 0, 0, 0);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: var(--bg-card, #121214);
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.12));
+    border-radius: var(--radius, 4px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: auto;
+    box-shadow: none;
+    box-sizing: border-box;
     animation: shortcutsSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -54,9 +68,8 @@
 @keyframes shortcutsSlideIn {
     from {
         opacity: 0;
-        transform: scale(0.95);
+        transform: scale(0.98);
     }
-
     to {
         opacity: 1;
         transform: scale(1);
@@ -68,10 +81,9 @@
         opacity: 1;
         transform: scale(1);
     }
-
     to {
         opacity: 0;
-        transform: scale(0.95);
+        transform: scale(0.98);
     }
 }
 
@@ -84,9 +96,10 @@
 
 .shortcuts-title {
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 700;
     color: #fff;
     margin: 0;
+    letter-spacing: -0.01em;
 }
 
 .shortcuts-close {
@@ -95,20 +108,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
-    border: none;
+    background: var(--bg-secondary, rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+    border-radius: var(--radius, 4px);
     cursor: pointer;
+    box-shadow: none;
+    color: var(--text-muted, rgba(255, 255, 255, 0.5));
 }
 
 .shortcuts-close svg {
-    width: 16px;
-    height: 16px;
-    color: rgba(255, 255, 255, 0.5);
-    transition: color 0.2s ease;
+    width: 14px;
+    height: 14px;
 }
 
-.shortcuts-close:hover svg {
+.shortcuts-close:hover {
     color: #fff;
+    border-color: var(--border-strong, rgba(255, 255, 255, 0.25));
 }
 
 .shortcuts-list {
@@ -124,27 +139,28 @@
 }
 
 .shortcuts-key {
-    min-width: 40px;
-    padding: 0.4rem 0.6rem;
-    background: rgba(255, 255, 255, 0.08);
+    min-width: 44px;
+    padding: 0.35rem 0.6rem;
+    background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 8px;
+    border-radius: var(--radius, 4px);
     color: #fff;
-    font-size: 0.8rem;
-    font-family: monospace;
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
     font-weight: 600;
     text-align: center;
+    box-shadow: none;
 }
 
 .shortcuts-desc {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .shortcuts-hint {
     margin: 1.25rem 0 0 0;
     padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.4);
     text-align: center;
@@ -154,13 +170,14 @@
     padding: 0.15rem 0.4rem;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 4px;
+    border-radius: var(--radius, 4px);
     font-size: 0.75rem;
-    font-family: monospace;
+    font-family: var(--font-mono, monospace);
+    box-shadow: none;
 }
 
 @media (max-width: 480px) {
     .shortcuts-modal {
-        margin: 1rem;
+        padding: 1.25rem;
     }
 }

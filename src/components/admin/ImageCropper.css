@@ -6,24 +6,34 @@
 .image-cropper-overlay {
     position: fixed;
     inset: 0;
-    z-index: 10100;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999999;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 1.5rem;
     background: rgba(0, 0, 0, 0.75);
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
+    box-sizing: border-box;
 }
 
 /* Modal */
 .image-cropper-modal {
-    width: 100%;
-    max-width: 500px;
+    width: min(92vw, 520px);
+    max-height: min(90vh, 600px);
+    margin: auto;
     display: flex;
     flex-direction: column;
     background: #fff;
-    border-radius: 4px;
-    box-shadow: 0 5px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid #ddd;
+    border-radius: var(--radius, 4px);
+    box-shadow: none;
     overflow: hidden;
+    touch-action: auto;
+    box-sizing: border-box;
 }
 
 /* Header */

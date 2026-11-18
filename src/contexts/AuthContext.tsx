@@ -11,6 +11,7 @@ interface AuthContextType {
     loading: boolean;
     isAuthenticated: boolean;
     isAdmin: boolean;
+    isSuperAdmin: boolean;
     logout: () => Promise<void>;
     refreshProfile: () => Promise<void>;
     hasPermission: (permission: AdminPermission) => boolean;
@@ -85,16 +86,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // User is authenticated only if they have both Firebase Auth AND a Firestore profile
     const isAuthenticated = !!user && !!profile;
 
-    // Check if user is an admin (has team field which only admins have)
+    // Check if user is a super admin
+    const isSuperAdmin = useMemo(() => {
+        return !!(profile && profile.isSuperAdmin === true);
+    }, [profile]);
+
+    // Check if user is an admin (has isAdmin: true or isSuperAdmin: true or legacy team field)
     const isAdmin = useMemo(() => {
-        return !!(profile && 'team' in profile && profile.team);
+        if (!profile) return false;
+        return !!(profile.isAdmin === true || profile.isSuperAdmin === true || ('team' in profile && Boolean(profile.team)));
     }, [profile]);
 
     // Check if admin has specific permission
     const hasPermission = useCallback((permission: AdminPermission): boolean => {
-        if (!isAdmin || !profile) return false;
-        const adminProfile = profile as AdminProfile;
-        return adminProfile.permissions?.includes(permission) || false;
+        if (!profile) return false;
+        // Super admins have access to all modules
+        if (profile.isSuperAdmin === true) return true;
+        if (!isAdmin) return false;
+        if (Array.isArray(profile.permissions)) {
+            return profile.permissions.includes(permission);
+        }
+        return true;
     }, [isAdmin, profile]);
 
     const value: AuthContextType = {
@@ -103,6 +115,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         loading,
         isAuthenticated,
         isAdmin,
+        isSuperAdmin,
         logout,
         refreshProfile,
         hasPermission

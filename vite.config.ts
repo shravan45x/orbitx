@@ -18,8 +18,8 @@ export default defineConfig({
         background_color: '#0a0a0f',
         display: 'standalone',
         orientation: 'portrait',
-        scope: '/orbitx-zcoer-website/',
-        start_url: '/orbitx-zcoer-website/',
+        scope: '/',
+        start_url: '/',
         categories: ['education', 'science', 'lifestyle'],
         icons: [
           {
@@ -138,8 +138,12 @@ export default defineConfig({
       }
     })
   ],
-  // Base path for GitHub Pages - must match repo name for github.io subdirectory
-  base: '/orbitx-zcoer-website/',
+  server: {
+    host: true,
+    port: 5173,
+  },
+  // Base path for custom domain (www.orbitx.zcoer.in) and localhost
+  base: '/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

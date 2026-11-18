@@ -1,0 +1,152 @@
+/* ===== OrbitX Checkout Overlay Modal ===== */
+/* OrbitX Design Rules: 4px border-radius, completely flat (NO box-shadow), NO hover animations */
+
+.orbitx-checkout-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(0.75rem, 3vw, 2rem);
+    z-index: 999999;
+    box-sizing: border-box;
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
+}
+
+.orbitx-checkout-modal {
+    background-color: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+    width: min(92vw, 680px);
+    max-height: min(90vh, 820px);
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    color: #ffffff;
+    margin: auto;
+    touch-action: auto;
+}
+
+@media (max-width: 600px) {
+    .orbitx-checkout-modal {
+        width: 95vw;
+        max-height: 94vh;
+    }
+}
+
+.orbitx-checkout-modal__close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 20;
+    background: transparent;
+    border: none; /* strictly NO visible border */
+    outline: none;
+    color: rgba(255, 255, 255, 0.65);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.15s ease;
+}
+
+.orbitx-checkout-modal__close-btn:hover {
+    color: #ffffff;
+}
+
+.orbitx-checkout-modal__close-btn:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.4);
+    outline-offset: 2px;
+}
+
+/* Right-side product visual taking 25% of modal area */
+.orbitx-checkout-modal__visual-pane {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.orbitx-checkout-modal__visual-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.orbitx-checkout-modal__visual-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    -webkit-mask-image: 
+        linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.7) 18%, #000000 45%),
+        linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.3) 25%, rgba(0, 0, 0, 0.8) 55%, #000000 85%);
+    mask-image: 
+        linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.7) 18%, #000000 45%),
+        linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.3) 25%, rgba(0, 0, 0, 0.8) 55%, #000000 85%);
+    -webkit-mask-composite: destination-in;
+    mask-composite: intersect;
+}
+
+.orbitx-checkout-modal__visual-fade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: 
+        /* Left edge fade: pure black on left, softly revealing image */
+        linear-gradient(to right, #000000 0%, rgba(0, 0, 0, 0.9) 15%, rgba(0, 0, 0, 0.4) 40%, transparent 75%),
+        /* Bottom edge fade: stronger fade to black */
+        linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0.98) 25%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.25) 75%, transparent 100%);
+}
+
+/* Modal Body with internal scrolling and overscroll isolation */
+.orbitx-checkout-modal__body {
+    position: relative;
+    z-index: 2;
+    flex: 1 1 auto;
+    padding: 2rem 1.75rem;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    width: 75%;
+    box-sizing: border-box;
+}
+
+/* Custom Minimal Scrollbar for Modal Body */
+.orbitx-checkout-modal__body::-webkit-scrollbar {
+    width: 5px;
+}
+
+.orbitx-checkout-modal__body::-webkit-scrollbar-track {
+    background: #000000;
+}
+
+.orbitx-checkout-modal__body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}

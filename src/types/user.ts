@@ -161,7 +161,13 @@ export interface UserProfile {
     yearOfGraduation: string;
     avatar?: string;
     googleLinked?: boolean;
-    role: 'user' | 'admin';
+    role?: 'user' | 'admin';
+    isAdmin?: boolean;
+    isSuperAdmin?: boolean;
+    permissions?: string[];
+    team?: string;
+    position?: string;
+    adminRole?: string[];
     isActive: boolean;
     createdAt: string; // ISO string for Firestore
     updatedAt: string; // ISO string for Firestore
@@ -253,6 +259,8 @@ export interface AdminProfile {
     // Optional fields for compatibility with UserProfile
     avatar?: string;
     role?: 'user' | 'admin';
+    isAdmin?: boolean;
+    isSuperAdmin?: boolean;
     qualificationLevel?: string;
     stream?: string;
     collegeName?: string;

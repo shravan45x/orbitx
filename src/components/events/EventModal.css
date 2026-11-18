@@ -1,22 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+/* ===== OrbitX Event Modal (Theme-Aware, Flat 4px System) ===== */
 
 /* ===== Modal Overlay ===== */
 .event-modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2000;
-    padding: 2rem;
-    will-change: opacity;
-    animation: eventModalFadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    z-index: 999999;
+    padding: 1.5rem;
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
+    animation: eventModalFadeIn 0.18s ease forwards;
+    box-sizing: border-box;
+}
+
+[data-theme="light"] .event-modal-overlay {
+    background: rgba(0, 0, 0, 0.45);
 }
 
 @keyframes eventModalFadeIn {
@@ -40,472 +44,496 @@
 }
 
 .event-modal-overlay--closing {
-    animation: eventModalFadeOut 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: eventModalFadeOut 0.15s ease forwards;
 }
 
 /* ===== Modal Container ===== */
 .event-modal {
     position: relative;
-    max-width: 900px;
-    width: 100%;
-    max-height: 78vh;
+    max-width: 680px;
+    width: min(92vw, 680px);
+    max-height: min(90vh, 880px);
+    margin: auto;
     overflow-y: auto;
-    background: rgba(0, 0, 0, 0);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 34px;
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    animation: eventModalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: auto;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius, 4px);
+    box-shadow: none;
+    box-sizing: border-box;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
-@keyframes eventModalSlideIn {
-    from {
-        opacity: 0;
-        transform: translate3d(0, 16px, 0) scale(0.97);
-    }
-
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-    }
+.event-modal::-webkit-scrollbar {
+    display: none;
 }
 
-@keyframes eventModalSlideOut {
-    from {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-    }
-
-    to {
-        opacity: 0;
-        transform: translate3d(0, 16px, 0) scale(0.97);
-    }
-}
-
-.event-modal--closing {
-    animation: eventModalSlideOut 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* ===== Close Button ===== */
-.event-modal__close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.9rem;
-    color: rgba(255, 255, 255, 0.7);
-    background: rgba(255, 255, 255, 0);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 1;
-    transition: background 0.2s ease, color 0.2s ease;
-}
-
-.event-modal__close:active {
-    transform: scale(0.98);
-}
-
-/* ===== Image Section ===== */
-.event-modal__image {
+/* ===== Panoramic Cover Image with Bottom Fade ===== */
+.event-modal__cover {
     position: relative;
     width: 100%;
-    height: 300px;
-    background: rgba(255, 255, 255, 0.05);
+    height: 270px;
+    background-color: var(--bg-secondary);
+    overflow: hidden;
 }
 
-.event-modal__image img {
+.event-modal__cover-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
 }
 
-/* ===== Image Navigation ===== */
-.event-modal__nav {
+/* Bottom blend/fade overlay */
+.event-modal__cover::after {
+    content: '';
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 36px;
-    height: 36px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 120px;
+    background: linear-gradient(to bottom, transparent 0%, var(--bg-card) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.event-modal__cover-placeholder {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    color: #fff;
-    background: rgba(255, 255, 255, 0);
+    background-color: var(--bg-secondary);
+    color: var(--text-dim);
+    font-size: 2rem;
+}
+
+/* Close Button Over Image */
+.event-modal__close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
     border: none;
-    border-radius: 50%;
+    border-radius: var(--radius, 4px);
+    color: var(--text-primary);
     cursor: pointer;
-    transition: background 0.2s ease;
+    z-index: 10;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
-.event-modal__nav--prev {
-    left: 1rem;
+.event-modal__close-btn svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
 }
 
-.event-modal__nav--next {
-    right: 1rem;
+
+.event-modal__close-btn:focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 1px;
 }
 
-/* ===== Image Dots ===== */
+/* Carousel Nav Buttons & Dots */
+.event-modal__carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius, 4px);
+    cursor: pointer;
+    z-index: 5;
+    transition: background-color 0.15s ease;
+}
+
+.event-modal__carousel-btn--prev {
+    left: 12px;
+}
+
+.event-modal__carousel-btn--next {
+    right: 12px;
+}
+
 .event-modal__dots {
     position: absolute;
-    bottom: 1rem;
+    bottom: 12px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 0.5rem;
+    gap: 6px;
+    z-index: 5;
 }
 
 .event-modal__dot {
-    width: 8px;
-    height: 8px;
-    background: rgba(255, 255, 255, 0.4);
+    width: 7px;
+    height: 7px;
+    background: var(--border-strong);
     border-radius: 50%;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background-color 0.15s ease;
 }
 
 .event-modal__dot--active {
-    background: #fff;
+    background: var(--text-primary);
 }
 
-/* ===== Content Section ===== */
-.event-modal__content {
-    padding: 2rem;
-}
-
-/* ===== Tag/Badge ===== */
-.event-modal__header-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.event-modal__tag {
-    display: inline-block;
-    width: fit-content;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    border-radius: 9999px;
-    color: #f0ff7c;
-    background: rgba(240, 255, 124, 0.1);
-}
-
-/* ===== Price Indicator ===== */
-.event-modal__price {
-    display: inline-block;
-    padding: 0.3rem 0.9rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    border-radius: 24px;
-    cursor: default;
-}
-
-/* Price Tier Colors */
-.event-modal__price--free {
-    color: #4eff9f;
-    background: rgba(78, 255, 159, 0.12);
-}
-
-.event-modal__price--low {
-    color: #4ecdc4;
-    background: rgba(78, 205, 196, 0.12);
-}
-
-.event-modal__price--medium {
-    color: #ffd93d;
-    background: rgba(255, 217, 61, 0.12);
-}
-
-.event-modal__price--high {
-    color: #ff9f4e;
-    background: rgba(255, 159, 78, 0.12);
-}
-
-.event-modal__price--premium {
-    color: #f472b6;
-    background: rgba(244, 114, 182, 0.12);
-}
-
-.event-modal__tag--past {
-    color: rgba(255, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.event-modal__badge--workshop {
-    background: rgba(78, 255, 159, 0.1);
-    color: #4eff9f;
-}
-
-.event-modal__badge--talk {
-    background: rgba(78, 159, 255, 0.1);
-    color: #4e9fff;
-}
-
-.event-modal__badge--competition {
-    background: rgba(255, 159, 78, 0.1);
-    color: #ff9f4e;
-}
-
-.event-modal__badge--outreach {
-    background: rgba(169, 78, 255, 0.1);
-    color: #a94eff;
-}
-
-/* ===== Title & Description ===== */
-.event-modal__title {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #fff;
-    margin: 0 0 1rem 0;
-}
-
-.event-modal__desc {
-    font-size: 1.1rem;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.75);
-    line-height: 1.7;
-    margin: 0 0 1.5rem 0;
-}
-
-/* ===== Details Grid ===== */
-.event-modal__details {
-    display: flex;
-    gap: 2rem;
-    margin-bottom: 2rem;
-    padding: 1.25rem;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 24px;
-}
-
-.event-modal__detail {
+/* ===== Modal Body Content ===== */
+.event-modal__body {
+    padding: 1.4rem 1.85rem 1.85rem 1.85rem;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 1.15rem;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 3;
 }
 
-.event-modal__label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.5);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+/* Badges Row */
+.event-modal__badges-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
 }
 
-.event-modal__value {
-    font-size: 1rem;
-    color: #fff;
-}
-
-/* Clickable Location Link */
-.event-modal__value--link {
+.event-modal__badge-pill {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    color: #4ecdc4;
+    gap: 6px;
+    padding: 3px 8px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius, 4px);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.event-modal__badge-pill--price {
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+}
+
+/* Event Title */
+.event-modal__title {
+    font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-transform: none;
+}
+
+/* Excerpt / Summary (when distinct shortDescription exists) */
+.event-modal__summary {
+    font-size: 0.92rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ===== 3-Column Stats Grid (Unclipped, Flexible Layout) ===== */
+.event-modal__stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem 1.5rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.event-modal__stat-col {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    min-width: 0;
+}
+
+.event-modal__stat-icon {
+    width: 20px;
+    height: 20px;
+    stroke: var(--text-muted);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.event-modal__stat-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    flex: 1;
+}
+
+.event-modal__stat-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    line-height: 1.1;
+}
+
+.event-modal__stat-primary {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.event-modal__stat-secondary {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 1.35;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.event-modal__stat-link {
     text-decoration: none;
-    transition: color 0.2s ease;
-    cursor: pointer;
+    color: inherit;
 }
 
-.event-modal__value--link:hover {
-    color: #7eddd6;
+.event-modal__stat-link:hover .event-modal__stat-primary {
+    color: #38bdf8;
 }
 
-.event-modal__value--link svg {
-    width: 14px;
-    height: 14px;
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
+/* ===== Hairline Divider ===== */
+.event-modal__divider {
+    width: 100%;
+    height: 1px;
+    background-color: var(--border-subtle);
+    margin: 0.25rem 0;
 }
 
-.event-modal__value--link:hover svg {
-    opacity: 1;
+/* ===== About the Event Section ===== */
+.event-modal__about-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-/* ===== Past Label ===== */
-.event-modal__past-label {
-    display: inline-block;
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.4);
-    font-style: italic;
+.event-modal__about-heading {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
 }
 
-/* ===== Register Button ===== */
-.event-modal__register-btn {
-    display: inline-block;
-    padding: 0.1rem 1rem;
-    font-size: 1.2rem;
-    font-weight: 600;
-    font-family: 'Berkshire Swash', serif;
-    color: #7cff62;
-    background: transparent;
-    border: none;
-    border-radius: 9999px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
+.event-modal__about-text {
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
 }
 
-.event-modal__register-btn:active {
-    transform: scale(0.98);
-}
-
-.event-modal__register-btn--disabled,
-.event-modal__register-btn:disabled {
-    color: rgba(255, 255, 255, 0.3);
-    cursor: not-allowed;
-}
-
-.event-modal__register-btn--disabled:active,
-.event-modal__register-btn:disabled:active {
-    transform: none;
-}
-
-.event-modal__register-btn--download {
-    color: #4eff9f;
-}
-
-/* ===== Actions Container ===== */
-.event-modal__actions {
+/* ===== Bottom Action Bar ===== */
+.event-modal__actions-bar {
     display: flex;
     align-items: center;
     gap: 1rem;
+    margin-top: 0.5rem;
     flex-wrap: wrap;
 }
 
-/* ===== Add to Calendar Button ===== */
-.event-modal__calendar-btn {
+/* Primary Register Button */
+.event-modal__cta-primary {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
+    padding: 0.68rem 1.6rem;
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: 1px solid var(--btn-primary-bg);
+    border-radius: var(--radius, 4px);
     font-size: 0.9rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.7);
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s ease;
+    box-sizing: border-box;
+    transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
 }
 
-.event-modal__calendar-btn:hover {
-    color: #fff;
+.event-modal__cta-primary:hover:not(:disabled) {
+    opacity: 0.88;
 }
 
-.event-modal__calendar-btn:active {
-    transform: scale(0.98);
+.event-modal__cta-primary:focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 1px;
 }
 
-.event-modal__calendar-btn svg {
-    width: 16px;
-    height: 16px;
+.event-modal__cta-primary--disabled,
+.event-modal__cta-primary:disabled {
+    background-color: var(--bg-secondary);
+    color: var(--text-dim);
+    border-color: var(--border-color);
+    cursor: not-allowed;
+    opacity: 1;
 }
 
-.event-modal__calendar-arrow {
-    width: 12px !important;
-    height: 12px !important;
-    margin-left: 0.25rem;
-    opacity: 0.6;
+.event-modal__cta-primary--download {
+    background-color: var(--bg-secondary);
+    color: #38bdf8;
+    border-color: #38bdf8;
 }
 
-/* Calendar Dropdown Wrapper */
-.event-modal__calendar-wrapper {
+.event-modal__cta-primary--download:hover {
+    background-color: rgba(56, 189, 248, 0.1);
+    border-color: #38bdf8;
+    opacity: 1;
+}
+
+/* Secondary Calendar Button */
+.event-modal__calendar-container {
     position: relative;
 }
 
+.event-modal__calendar-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.68rem 1.25rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius, 4px);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease;
+    white-space: nowrap;
+}
+
+.event-modal__calendar-trigger svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--text-primary);
+}
+
+.event-modal__calendar-chevron {
+    width: 12px !important;
+    height: 12px !important;
+    margin-left: 0.15rem;
+    opacity: 0.8;
+}
+
+.event-modal__calendar-trigger:hover {
+    border-color: var(--border-strong);
+}
+
+.event-modal__calendar-trigger:focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 1px;
+}
+
 /* Calendar Dropdown Menu */
-.event-modal__calendar-menu {
+.event-modal__calendar-dropdown {
     position: absolute;
-    bottom: calc(100% + 0.5rem);
+    bottom: calc(100% + 8px);
     left: 0;
-    min-width: 180px;
-    background: rgb(30, 30, 35);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 0.5rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    z-index: 10;
-    animation: calendarMenuFadeIn 0.15s ease;
+    min-width: 190px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius, 4px);
+    padding: 0.4rem;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
-@keyframes calendarMenuFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Calendar Option Button */
-.event-modal__calendar-option {
+.event-modal__calendar-item {
     display: flex;
     align-items: center;
     gap: 0.6rem;
     width: 100%;
-    padding: 0.6rem 0.75rem;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.8);
+    padding: 0.55rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-muted);
     background: transparent;
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius, 4px);
     cursor: pointer;
     text-align: left;
-    transition: background 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.event-modal__calendar-option:active {
-    transform: scale(0.98);
+.event-modal__calendar-item:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
-.event-modal__calendar-option svg {
-    width: 16px;
-    height: 16px;
-    opacity: 0.7;
+.event-modal__calendar-item svg {
+    width: 15px;
+    height: 15px;
+    stroke: currentColor;
+    flex-shrink: 0;
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 900px) {
-    .event-modal__details {
-        flex-direction: column;
+.event-modal__past-tag {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.68rem 0;
+}
+
+/* ===== Responsive Styles ===== */
+@media (max-width: 640px) {
+    .event-modal__cover {
+        height: 210px;
+    }
+
+    .event-modal__body {
+        padding: 1.25rem 1.25rem 1.5rem 1.25rem;
         gap: 1rem;
     }
-}
 
-@media (max-width: 768px) {
-    .event-modal {
-        border-radius: 20px;
+    .event-modal__stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
-    .event-modal__content {
-        padding: 1.5rem;
+    .event-modal__actions-bar {
+        flex-direction: column;
+        align-items: stretch;
     }
 
-    .event-modal__title {
-        font-size: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .event-modal-overlay {
-        padding: 1rem;
+    .event-modal__cta-primary,
+    .event-modal__calendar-trigger {
+        width: 100%;
+        justify-content: center;
     }
 }
