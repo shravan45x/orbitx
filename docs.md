@@ -38,7 +38,7 @@ Every page and component in OrbitX adheres to strict design system directives (e
 
 ## 3. Current Progress & Page Status
 
-This branch (`main`) contains the latest structural and responsive developments:
+This branch (`dev`) contains the latest structural and responsive developments:
 
 | Page | Route | Status | Notes |
 |------|-------|--------|-------|
@@ -60,7 +60,7 @@ To prevent accidental deployments or untested previews while collaborating on th
 
 ```json
 {
-  "ignoreCommand": "if [ \"$VERCEL_GIT_COMMIT_REF\" = \"main\" ]; then exit 0; else exit 1; fi",
+  "ignoreCommand": "if [ \"$VERCEL_GIT_COMMIT_REF\" = \"dev\" ]; then exit 0; else exit 1; fi",
   "rewrites": [
     {
       "source": "/(.*)",
@@ -70,9 +70,9 @@ To prevent accidental deployments or untested previews while collaborating on th
 }
 ```
 
-- When `main` is pushed to GitHub, Vercel runs the `ignoreCommand`.
-- The command detects `VERCEL_GIT_COMMIT_REF = "main"`, exits with `0`, and Vercel automatically skips the build without deploying.
-- When ready to deploy, remove `ignoreCommand` from `vercel.json` or trigger a production deployment manually.
+- When `dev` is pushed to GitHub, Vercel runs the `ignoreCommand`.
+- The command detects `VERCEL_GIT_COMMIT_REF = "dev"`, exits with `0`, and Vercel automatically skips the build without deploying.
+- Only when changes are merged into `main` will production deployment run on Vercel.
 
 ---
 
