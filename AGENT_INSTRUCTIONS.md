@@ -40,6 +40,6 @@ These user-defined rules explicitly take precedence over any generic styling def
 
 ## 4. Git & Vercel Deployment Safety
 
-- Feature branches like `feat/responsive-pages-update` are blocked from automated Vercel preview builds via `ignoreCommand` in `vercel.json`.
+- Automated Vercel deployments on `main` are paused via `ignoreCommand` in `vercel.json` until ready for production release.
 - Conventional commit messages required (`feat:`, `fix:`, `refactor:`, `chore:`).
 - Always verify the build with `npm run build` before pushing.
